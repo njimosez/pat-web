@@ -1,0 +1,19 @@
+{
+  "name": "pat-web",
+  "version": "1.0.0",
+  "description": "web app that renders a \"summary timeline\" of a PAT project, and allows reordering, inserting, and deleting tasks",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "pat-web",
+    "EVA"
+  ],
+  "author": "Goerling Walter, Jalloh Ibrahim, Magoola Ibrahim , Ngwa Edwin, Senshaw Araya",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nunjucks": "^3.2.0"
+  }
+}
