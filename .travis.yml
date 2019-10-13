@@ -6,9 +6,5 @@ env:
     - CC_TEST_REPORTER_ID=c247365a9a7270a8a0e198746a58db6228982a5fcec2f9d94dc081dba241e0a0
 install:
   - npm install
-before_script:
-  - ./cc-test-reporter before-build
 script:
   - npm test
-after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
