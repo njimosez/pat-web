@@ -7,4 +7,4 @@ env:
 install:
   - npm install
 script:
-  - npm test
+  - node app
