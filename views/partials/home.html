@@ -10,24 +10,26 @@
 						<div class="home_content_inner">
              	<div class="m-5 pb-5"></div>
 								<div class="row">
-						<div class="col-12"><div class="find_title text-center">EVA Procedure Editor</div></div>
+						<div class="col-12"><div class="find_title text-center">PAT Project Editor</div></div>
 
 					</div>
 					<div class="row">
 					<div class="col-md-6 offset-md-3">
-						<form class="form-inline ">
+						<form class="form-inline" method="POST" action="/project">
 								<div class="input-group">
 								 <label for="giturl"></label>
 										<input type="text" id="giturl_input" name="giturl" class="form-control form-control-lg destination find_input" size="50"  placeholder="Enter a git URL..." required>
 									<div class="input-group-btn">
-								 <button id="giturl_button" type="button" class="btn btn-default newsletter_button "  value="Fetch Info">Retrieve Project</button>
+								 <button id="giturl_button" type="submit" class="btn btn-default newsletter_button">Retrieve Project</button>
 									</div>
 								</div>
 
 							</form>
 						</div>
-					</div>
-
+					</div><br>
+                <blockquote class="blockquote">
+  <p class="mb-0 text-white text-center"> Bootstrap your EVA procedures using an easy to edit tasks summary timeline </p>
+</blockquote>
 						</div>
 					</div>
 				</div>

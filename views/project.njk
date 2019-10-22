@@ -1,7 +1,7 @@
 {% extends "_layout.html" %}
 
 {% block content %}
-{% include "partials/home.html" %}
+
 	<!-- Home Services -->
 
 	<div class="services">
@@ -51,12 +51,17 @@
 
 			</div>
 			<div class="row justify-content-around mt-5 pt-5">
-    <div class="col-3 ">
-      		<button  class="newsletter_button"><a href="https://github.com/xOPERATIONS/pat" ><i class="fa fa-github fa-2x"></a></i></button>
-    </div>
-    <div class="col-3">
-    	<button  class="newsletter_button"><a href="#" ><i class="fa fa-youtube fa-2x"></a></i></button>
-    </div>
+			{% children in data %}
+  {{ children.name }}
+{% endfor %}
+<ul>
+{% for children in data %}
+  <li>{{ children.name }}</li>
+{% else %}
+  <li>This would display if the 'item' collection were empty</li>
+{% endfor %}
+
+	
   </div>
 		</div>
 	</div>
