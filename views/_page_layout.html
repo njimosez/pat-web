@@ -14,19 +14,23 @@
 <link rel="stylesheet" type="text/css" href="styles/about_responsive.css">
 <link rel="stylesheet" type="text/css" href="bootstrap-treeview-1.2.0/public/css/bootstrap-treeview.css">
 </head>
-<body>
+<body class="d-flex flex-column">
 
 <div class="super_container">
 {% include "partials/header.html" %}
 
+ <div class="container ">
+ <div class="page-content">
 {% block content %}
 {% endblock %}
 
 
 
+</div>
+</div>
 
 {% include "partials/footer.html" %}
-</div>
+
 <script src="js/jquery-3.2.1.min.js"></script>
 <script src="styles/bootstrap4/popper.js"></script>
 <script src="styles/bootstrap4/bootstrap.min.js"></script>
@@ -38,6 +42,6 @@
 <script src="plugins/easing/easing.js"></script>
 <script src="plugins/parallax-js-master/parallax.min.js"></script>
 <script src="js/about_custom.js"></script>
-<script src="plugins/bootstrap-treeview-1.2.0/public/js/bootstrap-treeview.js"></script>
+</div>
 </body>
 </html>

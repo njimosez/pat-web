@@ -1,0 +1,16 @@
+{% extends "_page_layout.html" %}
+
+{% block content %}
+  <div class="jumbotron text-center">
+    <div class="icon_box">
+      <div class="icon_box_image"><img src="images/warning.svg" class="svg" alt="https://www.flaticon.com/authors/monkik"></div>
+      <div class="icon_box_title">Oops!! Something went wrong</div>
+    </div>
+    <h3>{{message}}</h3>
+    <div>{{error.status}}</div>
+    <pre>{{error.stack}}</pre>
+    <h4>Click the back button and try again!</h4>
+  </div>
+
+</div>
+{% endblock %}

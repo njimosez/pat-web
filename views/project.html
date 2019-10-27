@@ -1,0 +1,51 @@
+{% extends "_page_layout.html" %}
+
+{% block content %}
+
+  <h2 class="text-center">{{ project | capitalize}} Project Files </h2>
+  <p> Select to view the Procedure Summary Timeline </p>
+  <table class="table .table-sm table-striped table-dark table-hover">
+
+    <thead>
+      <tr>
+        <th>Procedure Files</th>
+        <th>View</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in procedures %}
+        <tr>
+
+          <td>{{ item.name }}</td>
+          <td>
+            <div class="input-group-btn">
+              <button id="procedure" type="submit" class="btn btn-success "> Summary Timeline</button>
+            </div>
+
+          </td>
+
+        </tr>
+      {% else %}
+        <li>This would display if the 'item' collection were empty</li>
+      {% endfor %}
+    </tbody>
+
+  </table>
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="card text-center" style="width: 30rem;">
+        <h5 class="card-header">
+   Available Tasks Files 
+  </h5>
+        <ul class="list-group list-group-flush">
+          {% for item in tasks %}
+            <li class="list-group-item">{{ item.name }}</li>
+          {% else %}
+            <li>This would display if the 'item' collection were empty</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

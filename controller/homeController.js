@@ -1,60 +1,54 @@
-
-const shell = require('shelljs');
-//const projectService = require('../services/cloneProject.service.js') ;
-//const shell = require('shelljs');
-const Git = require("nodegit");
+/**
+ * Home Controller to route user request and system responses
+ *
+ */
+//******************************************************* 
+/**
+ * @param  {} '../services/cloneProject.service.js'
+ * @param  {} ;constpath=require('path'
+ * @param  {} ;const{check
+ * @param  {} validationResult}=require('express-validator'
+ */
+const cloneProjectService = require('../services/cloneProject.service.js');
 const path = require('path');
+const { check, validationResult } = require('express-validator');
 
+//******************************************************* 
 
+module.exports = function (app) {
 
-module.exports = function(app) {
+  //********************Index page ******************************* 
 
-    // Index page controller
-    app.get('/', function(req, res) {
-        console.log(req.sessionID)
-        res.render('index.html');
+  app.get('/', function (req, res) {
+    res.render('index.html');
+    // TODO hide the input form if a project exist in the session
+    // TODO Enable user to delete the project folder and start over 
 
-    });
+  });
 
-    app.post('/project', function(req, res) {
-        console.log(req.body.giturl);
+  //**********************Project************************ 
+  app.post('/project', [
+    // validate entry against a string or modify to use an array or regex
+    check('giturl').contains("xOPERATIONS")
+    // TODO should use URL instead refer to https://express-validator.github.io/docs/ 
+    // check('giturl').isURL('https://gitlab.com/xOPERATIONS')
+  ], function (req, res, next) {
 
-       var tmpProjectPath = './public/' + req.sessionID;
-     //  console.log(tmpProjectPath);
-     cloneOpts = {};
-    //create repos as work dir 
-    
-      //  shell.mkdir(tmpProjectPath);
-     Git.Clone(req.body.giturl, tmpProjectPath, cloneOpts).then(function (repo) {
-          //send back 
-        console.log("Cloned " + path.basename(req.body.giturl) + " to " + repo.workdir());
-       message = "Cloned " + path.basename(req.body.giturl) + " to " + repo.workdir();
-      // console.log(message);
-       return message;
-    }).catch(function (err) {
-       console.log(err);
-     //   message = err;
-     //   return message;
+    // Finds the validation errors in this request and pass aen error message to the user
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      next(new Error("Invalid URL"));
     }
-    // good then recursively create class ? of the repo or show repo tree -> then class
-    );
-    
-   // var walkproject =  walkProjectService.walkProjectTree(tmpProjectPath);
-       
-   
-  ///console.log(projectService.getProjectdir(tmpProjectPath,req.body.giturl));
-      
-  console.log(path.basename(req.body.giturl));
-       
-        //res.log(1)
-        res.send(path.basename(req.body.giturl));
-        // res.render('project', { data: getTree() });
 
-        //  $('#tree').treeview({data: getTree()});
-        // console.log(dir.path)
-        // data.forEach(file => {
-        //  console.log(file);
-        //});
-    });
+    // map temp project directory using the session ID /    
+    var tmpProjectPath = './public/models/' + req.sessionID;
+
+    // call the clone service if URL validation is succesfull and pass the project files to the user 
+    cloneProjectService.cloneProjectdir(req, res, next, tmpProjectPath, req.body.giturl);
+
+    // TODO : removed session project dirafter session expiry  
+  });
+
+  //******************************************************* 
 
 }; // end module.

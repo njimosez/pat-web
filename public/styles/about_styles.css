@@ -51,6 +51,7 @@ body
 	font-weight: 400;
 	background: #FFFFFF;
 	color: #131a2f;
+	
 }
 div
 {
@@ -232,7 +233,12 @@ section
 {
 	height: 130% !important;
 }
-
+.page-content {
+	margin-top: 20%;
+	margin-bottom: 25%;
+	
+  }
+  
 /*********************************
 3. Home
 *********************************/
@@ -1397,6 +1403,7 @@ section
 	background: #080d1d;
 	padding-top: 79px;
 	padding-bottom: 79px;
+	
 }
 .footer_about
 {
@@ -1522,3 +1529,6 @@ section
 {
 	background: rgba(254,60,82,0.8);
 }
+#sticky-footer {
+	flex-shrink: none;
+  }
