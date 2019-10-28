@@ -41,7 +41,7 @@ module.exports = function (app) {
     }
 
     // map temp project directory using the session ID /    
-    var tmpProjectPath = './public/models/' + req.sessionID;
+    var tmpProjectPath = './public/project/' + req.sessionID;
 
     // call the clone service if URL validation is succesfull and pass the project files to the user 
     cloneProjectService.cloneProjectdir(req, res, next, tmpProjectPath, req.body.giturl);
