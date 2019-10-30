@@ -4,14 +4,8 @@ The purpose of this web app(under development) is to facilitate large structural
 files used in automating the creation of NASA Extravehicular Activities (EVAs, AKA &quot;spacewalks&quot;)
  procedures when using the [Procedure Authoring Thing](https://github.com/xOPERATIONS/pat).
 
-
  # Dev Notes
-1.  Implemented  a web application arhitecture using NodeJS Express/Nujuncks 
-2.  Implemented PAT web Use cases 1 and 2 -10/27/2018
-3.  - Fix the missing local project folder issue preventing the app to store a retrieved PAT Project
-    - Update the Readme file with installation notes - 10-28-2019 
-
-
+   Read devnotes.md for development status
  
 # Install for testing dev purposes
 1. Install [node LTS version](https://nodejs.org/en/download/).

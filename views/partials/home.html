@@ -1,38 +1,28 @@
-	<!-- Home -->
+<div class="home">
+	<!-- Image by https://unsplash.com/@peecho -->
+	<div class="home_background parallax-window" data-parallax="scroll" data-image-src="images/crewdragon.jpg" data-speed="0.8"></div>
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<div class="home_content">
+					<div class="home_content_inner">
+						<div class="m-5 pb-5"></div>
+						<div class="row"></div>
+						<div class="row">
+							<div class="col-md-6 offset-md-3 text-center">
+								{% if project %}
 
-	<div class="home">
-		<!-- Image by https://unsplash.com/@peecho -->
-		<div class="home_background parallax-window" data-parallax="scroll" data-image-src="images/crewdragon.jpg" data-speed="0.8"></div>
-		<div class="container">
-			<div class="row">
-				<div class="col">
-					<div class="home_content">
-						<div class="home_content_inner">
-             	<div class="m-5 pb-5"></div>
-								<div class="row">
-						<div class="col-12"><div class="find_title text-center">PAT Project Editor</div></div>
+									{% include "partials/home-view-project.html" %}
 
-					</div>
-					<div class="row">
-					<div class="col-md-6 offset-md-3">
-						<form class="form-inline" method="POST" action="/project">
-								<div class="input-group">
-								 <label for="giturl"></label>
-										<input type="text" id="giturl_input" name="giturl" class="form-control form-control-lg destination find_input" size="50"  placeholder="Enter a git URL..." required>
-									<div class="input-group-btn">
-								 <button id="giturl_button" type="submit" class="btn btn-default newsletter_button">Retrieve Project</button>
-									</div>
-								</div>
+								{% else %}
+									{% include "partials/home-retrieve-project-form.html" %}
 
-							</form>
-						</div>
-					</div><br>
-                <blockquote class="blockquote">
-  <p class="mb-0 text-white text-center"> Bootstrap your EVA procedures using an easy to edit tasks summary timeline </p>
-</blockquote>
+								{% endif %}
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+</div>

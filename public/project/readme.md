@@ -1,1 +1,0 @@
-This is the local repository for retrieved PAT Project 

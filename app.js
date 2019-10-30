@@ -1,22 +1,14 @@
 /**
  * PAT Application entry point
  */
-/**
- * @param  {} 'express'
- * @param  {} constbodyParser=require('body-parser'
- * @param  {} constnunjucks=require('nunjucks'
- * @param  {} constuuid=require('uuid/v4'
- * @param  {} constsession=require('express-session'
- * @param  {} constapp=express(
- * @param  {} ;consthomeController=require('./controller/homeController'
- */
+
 const express = require('express')
 const bodyParser = require('body-parser')
 const nunjucks = require('nunjucks')
 const uuid = require('uuid/v4')
 const session = require('express-session')
 const app = express();
-const homeController = require('./controller/homeController');
+const patController = require('./controller/patController');
 
 //******************************************************* 
 
@@ -58,7 +50,7 @@ nunjucks.configure('views', {
 })
 
 //Call/fire controllers/routes
-homeController(app);
+patController(app);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

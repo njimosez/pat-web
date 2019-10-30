@@ -8,28 +8,38 @@
 
 					<!-- Logo -->
 					<div class="logo_container">
-						<div class="logo">
-							<div>PAT</div>
-							<div>web editor</div>
-							<div class="logo_image"><img src="images/logo.png" alt=""></div>
-						</div>
+						<a href="/">
+							<div class="logo">
+								<div>PAT</div>
+								<div>web editor</div>
+								<div class="logo_image"><img src="images/logo.png" alt=""></div>
+							</div>
+						</a>
 					</div>
 
 					<!-- Main Navigation -->
 					<nav class="main_nav ml-auto">
 						<ul class="main_nav_list">
-							<li class="main_nav_item active">
-								<a href="#">Procedure Authoring Thing</a>
-							</li>
-							<li class="main_nav_item">
-								<a href="">&nbsp;</a>
-							</li>
-							<li class="main_nav_item">
-								<a href="">&nbsp;</a>
-							</li>
-							<li class="main_nav_item">
-								<a href="">&nbsp;</a>
-							</li>
+							{% if project %}
+
+								<li class="main_nav_item active">
+
+									<a href="/">Home</a>
+								</li>
+								<li class="main_nav_item">
+
+									<!-- TODO URLIZE  -->
+								</li>
+								<li class="main_nav_item">
+									<!-- TODO URLIZE  -->
+								</li>
+							{% else %}
+
+								<li class="main_nav_item active">
+
+									<a href="#">Procedure Authoring Thing</a>
+								</li>
+							{% endif %}
 						</ul>
 					</nav>
 

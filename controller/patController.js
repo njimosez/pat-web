@@ -2,31 +2,30 @@
  * Home Controller to route user request and system responses
  *
  */
-//******************************************************* 
-/**
- * @param  {} '../services/cloneProject.service.js'
- * @param  {} ;constpath=require('path'
- * @param  {} ;const{check
- * @param  {} validationResult}=require('express-validator'
- */
+
 const cloneProjectService = require('../services/cloneProject.service.js');
 const path = require('path');
 const { check, validationResult } = require('express-validator');
-
+const _ = require('underscore');
+const db = require('../models');
 //******************************************************* 
 
 module.exports = function (app) {
-
-  //********************Index page ******************************* 
-
+  /* Index page */
   app.get('/', function (req, res) {
-    res.render('index.html');
-    // TODO hide the input form if a project exist in the session
+    return db.User.findOne({
+      where: { uniqueId: req.sessionID }
+    }).then((User) => res.render('index.html', { project: User }))
+      .catch((err) => {
+        console.log('There was an error querying users', JSON.stringify(err))
+        return next(err)
+      });
+
     // TODO Enable user to delete the project folder and start over 
 
   });
 
-  //**********************Project************************ 
+  /* Project page */
   app.post('/project', [
     // validate entry against a string or modify to use an array or regex
     check('giturl').contains("xOPERATIONS")
@@ -40,15 +39,31 @@ module.exports = function (app) {
       next(new Error("Invalid URL"));
     }
 
-    // map temp project directory using the session ID /    
-    var tmpProjectPath = './public/project/' + req.sessionID;
+    else {
 
-    // call the clone service if URL validation is succesfull and pass the project files to the user 
-    cloneProjectService.cloneProjectdir(req, res, next, tmpProjectPath, req.body.giturl);
+      cloneProjectService.cloneProjectdir(req, res, next, req.body.giturl);
 
+    }
     // TODO : removed session project dirafter session expiry  
   });
+
+  /* Project page if project already in local repos*/
+  app.get('/projectfiles', function (req, res, next) {
+    cloneProjectService.tempProjectdir(req, res, req.query.projectUrl);
+
+  });
+
+  /* Summary Timeline page */
+  app.get('/summary', function (req, res, next) {
+    res.render('summary-timeline.html')
+
+  });
+
+
+  // res.send("POST")
+
 
   //******************************************************* 
 
 }; // end module.
+
