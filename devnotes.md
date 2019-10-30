@@ -18,3 +18,4 @@
 
 # Dev Status 10-29-19
 - PAT SRS Use cases 1 and 2 completed and awaiting unit and integration testing for feedbacks 
+- Tested to verify that db:migrate will create and migrate the sqlite db files if none exist 
