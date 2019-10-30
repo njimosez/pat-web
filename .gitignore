@@ -85,5 +85,4 @@ typings/
 .fusebox/
 
 # Sqlite3 db files
-.sqlite3
-.db
+patwebapp.sqlite3

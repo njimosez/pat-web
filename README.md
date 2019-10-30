@@ -14,17 +14,19 @@ files used in automating the creation of NASA Extravehicular Activities (EVAs, A
  ```git clone https://github.com/njimosez/pat-web.git```
 4. Navigate into the project directory, using command `cd pat-web`
 5. Use NPM to install the module, using command `npm install`
-6. Issue cmd `node app` to start the application
-7. Open  `http://localhost:3000` in your browser
-8. Test and provide feedback
+6. Issue cmd `npx sequelize db:migrate` to autogenerate embedded db(sqlite3) migration
+7. Issue cmd `node app` to start the application
+8. Open  `http://localhost:3000` in your browser
+9. Test and provide feedback
 
 # Pulling updates
 1. Navigate into the project directory
 5. Issue cmd `git pull` to pull latest
 3. Use NPM to update the module, using command `npm install`
-4. Issue cmd `node app` to start the application
-7. Open  `http://localhost:3000` in your browser
-8. Test and provide feedback
+4. Issue cmd `npx sequelize db:migrate` to autogenerate embedded db(sqlite3) migration
+5. Issue cmd `node app` to start the application
+6. Open  `http://localhost:3000` in your browser
+7. Test and provide feedback
 
 ## Credits
 

@@ -12,7 +12,7 @@ const db = require('../models');
 
 module.exports = function (app) {
   /* Index page */
-  app.get('/', function (req, res) {
+  app.get('/', function (req, res,next) {
     return db.User.findOne({
       where: { uniqueId: req.sessionID }
     }).then((User) => res.render('index.html', { project: User }))
@@ -36,7 +36,7 @@ module.exports = function (app) {
     // Finds the validation errors in this request and pass aen error message to the user
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      next(new Error("Invalid URL"));
+      next(new Error("Invalid URL: Not a Recognized PAT project repository"));
     }
 
     else {
