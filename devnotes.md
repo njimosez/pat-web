@@ -6,7 +6,7 @@
 
 # 10-29-19 -Edwin Ngwa 
 1. Implemented an light database layer using Sqlite3 to persist user sessions variables
-2. Implemented ORM to model a user object using a session id as the uniqueid
+2. Implemented ORM to model a user object using the session id as the uniqueid
 3. Implemented templates and functions to render links to various features if a PAT project was previously retrieved in a session : 
    -  User will now see navigation buttons on the home page if a valid PAT project is retrieved and available in the local repo    
 4. Added a function call to create the project directory if it does not exist
