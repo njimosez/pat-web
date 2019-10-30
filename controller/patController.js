@@ -15,7 +15,7 @@ module.exports = function (app) {
   app.get('/', function (req, res,next) {
     return db.User.findOne({
       where: { uniqueId: req.sessionID }
-    }).then((User) => res.render('index.html', { project: User }))
+    }).then((User) => res.render('index.html', { userSession: User }))
       .catch((err) => {
         console.log('There was an error querying users', JSON.stringify(err))
         return next(err)

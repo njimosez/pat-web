@@ -20,25 +20,28 @@
 					<!-- Main Navigation -->
 					<nav class="main_nav ml-auto">
 						<ul class="main_nav_list">
-							{% if project %}
+							{% if userSession %}
 
-								<li class="main_nav_item active">
+							<li class="main_nav_item active">
 
-									<a href="/">Home</a>
-								</li>
-								<li class="main_nav_item">
+								<a href="/">Home</a>
+							</li>
+							<li class="main_nav_item">
 
-									<!-- TODO URLIZE  -->
-								</li>
-								<li class="main_nav_item">
-									<!-- TODO URLIZE  -->
-								</li>
+								<a href="/projectfiles?projectUrl={{ userSession.projectUrl}}">Project Files</a>
+
+
+							</li>
+							<li class="main_nav_item">
+								<!-- TODO URLIZE  -->
+								<a href="/summary?projectUrl={{ userSession.projectUrl}}">Summary Timeline</a>
+							</li>
 							{% else %}
 
-								<li class="main_nav_item active">
+							<li class="main_nav_item active">
 
-									<a href="#">Procedure Authoring Thing</a>
-								</li>
+								<a href="/">Procedure Authoring Thing</a>
+							</li>
 							{% endif %}
 						</ul>
 					</nav>
@@ -46,8 +49,10 @@
 					<!-- Search -->
 					<div class="search">
 						<form action="#" class="search_form">
-							<input type="search" name="search_input" class="search_input ctrl_class" required="required" placeholder="Keyword">
-							<button type="submit" class="search_button ml-auto ctrl_class"><img src="images/search.png" alt=""></button>
+							<input type="search" name="search_input" class="search_input ctrl_class" required="required"
+								placeholder="Keyword">
+							<button type="submit" class="search_button ml-auto ctrl_class"><img src="images/search.png"
+									alt=""></button>
 						</form>
 					</div>
 

@@ -69,9 +69,8 @@ const tempProjectdir = function (req, res, projectUrl) {
 
   var patProjectdir = './public/projects/';
   var userSessionDir = patProjectdir + req.sessionID;
-
   var procedureFiles = getTree(userSessionDir + "/" + path.basename(projectUrl) + "/procedures/");
-  procedureData = Object.byString(procedureFiles, 'children');
+    procedureData = Object.byString(procedureFiles, 'children');
 
   var taskFiles = getTree(userSessionDir + "/" + path.basename(projectUrl) + "/tasks/");
   taskData = Object.byString(taskFiles, 'children');
@@ -80,6 +79,12 @@ const tempProjectdir = function (req, res, projectUrl) {
 
 }// end module
 
+/* Get session by project URL */
+ function getSessionData(req) {
+  return db.User.findOne({
+    where: { projectUrl: req.query.projectUrl }
+  })
+};
 
 //********************Helper functions*********************************** 
 // should be refactored into a helper folder for modularity 
