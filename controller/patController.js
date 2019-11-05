@@ -3,23 +3,18 @@
  *
  */
 
-const cloneProjectService = require('../services/cloneProject.service.js');
+const patProjectService = require('../services/patProject.service.js');
 const path = require('path');
 const { check, validationResult } = require('express-validator');
 const _ = require('underscore');
-const db = require('../models');
+
 //******************************************************* 
 
 module.exports = function (app) {
   /* Index page */
   app.get('/', function (req, res,next) {
-    return db.User.findOne({
-      where: { uniqueId: req.sessionID }
-    }).then((User) => res.render('index.html', { userSession: User }))
-      .catch((err) => {
-        console.log('There was an error querying users', JSON.stringify(err))
-        return next(err)
-      });
+
+    patProjectService.projectUser(req, res, next, req.body.giturl);
 
     // TODO Enable user to delete the project folder and start over 
 
@@ -28,7 +23,7 @@ module.exports = function (app) {
   /* Project page */
   app.post('/project', [
     // validate entry against a string or modify to use an array or regex
-    check('giturl').contains("xOPERATIONS")
+    check('giturl').contains("sts")
     // TODO should use URL instead refer to https://express-validator.github.io/docs/ 
     // check('giturl').isURL('https://gitlab.com/xOPERATIONS')
   ], function (req, res, next) {
@@ -41,7 +36,7 @@ module.exports = function (app) {
 
     else {
 
-      cloneProjectService.cloneProjectdir(req, res, next, req.body.giturl);
+      patProjectService.cloneProjectdir(req, res, next, req.body.giturl);
 
     }
     // TODO : removed session project dirafter session expiry  
@@ -49,13 +44,19 @@ module.exports = function (app) {
 
   /* Project page if project already in local repos*/
   app.get('/projectfiles', function (req, res, next) {
-    cloneProjectService.tempProjectdir(req, res, req.query.projectUrl);
+
+   // console.log(req.query.projectUrl);
+  //  res.send(req.query.projectUrl)
+    patProjectService.projectfiles(req, res, next);
 
   });
 
   /* Summary Timeline page */
   app.get('/summary', function (req, res, next) {
-    res.render('summary-timeline.html')
+   // console.log(req.query.projectUrl);
+   // res.send(req.query.projectUrl)
+    patProjectService.projectTimeline(req, res, next)
+   
 
   });
 

@@ -20,7 +20,7 @@
 					<!-- Main Navigation -->
 					<nav class="main_nav ml-auto">
 						<ul class="main_nav_list">
-							{% if userSession %}
+							{% if sessionDoc %}
 
 							<li class="main_nav_item active">
 
@@ -28,13 +28,13 @@
 							</li>
 							<li class="main_nav_item">
 
-								<a href="/projectfiles?projectUrl={{ userSession.projectUrl}}">Project Files</a>
+								<a href="/projectfiles?projectId={{ sessionDoc.userId}}">Project Files</a>
 
 
 							</li>
 							<li class="main_nav_item">
 								<!-- TODO URLIZE  -->
-								<a href="/summary?projectUrl={{ userSession.projectUrl}}">Summary Timeline</a>
+								<a href="/summary?projectId={{ sessionDoc.userId}}">Summary Timeline</a>
 							</li>
 							{% else %}
 

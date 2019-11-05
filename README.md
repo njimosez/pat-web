@@ -15,6 +15,15 @@ files used in automating the creation of NASA Extravehicular Activities (EVAs, A
 4. Navigate into the project directory, using command `cd pat-web`
 5. Use NPM to install the module, using command `npm install`
 6. Issue cmd `npx sequelize db:migrate` to autogenerate embedded db(sqlite3) migration
+6. Install build tools-- python 
+To fix, right-click on PowerShell and run "as Administrator".
+npm --add-python-to-path='true' --debug install --global windows-build-tools
+npm install --global --production windows-build-tools
+pXDu$ipe5p3arXB
+bEpM29bx1tlFb7Lp
+
+xQZhFjcdR9Qyc@b
+npm install node-gyp (https://catalin.me/how-to-fix-node-js-gyp-err-cant-find-python-executable-python-on-windows/)
 7. Issue cmd `node app` to start the application
 8. Open  `http://localhost:3000` in your browser
 9. Test and provide feedback
