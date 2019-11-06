@@ -110,6 +110,27 @@ const getProjectUser = function (req, res, next) {
   
 }// end module
 
+
+
+const getProjectfiles = function (req, res, next) {
+  var userSessionDir = patProjectdir + req.sessionID;
+  console.log(userSessionDir);  
+  console.log(userSessionDir);  
+  console.log(req.query.projectUrl);
+  db.findOne({ userId: req.sessionID }, function(err, doc) {
+   
+    if (_.isEmpty(doc)) {
+      res.render('project.html');
+    }
+      else{
+        console.log(doc)
+         res.render('project.html', { sessionDoc: doc});
+      }
+   
+})
+
+ 
+}// end module
 const getProjectTimeline = function (req, res, next) {
     
   var userSessionDir = patProjectdir + req.sessionID;
@@ -132,25 +153,25 @@ const getProjectTimeline = function (req, res, next) {
  
  } 
 
-const getProjectfiles = function (req, res, next) {
+ const deleteProjectFiles = function (req, res, next) {
+    
   var userSessionDir = patProjectdir + req.sessionID;
-  console.log(userSessionDir);  
-  console.log(userSessionDir);  
-  console.log(req.query.projectUrl);
-  db.findOne({ userId: req.sessionID }, function(err, doc) {
+  var projectUser = {"userId": null,"projectName":null,"projectURL":null};
+  db.remove({ userId: req.sessionID }, function(err, doc) {
    
-    if (_.isEmpty(doc)) {
-      res.render('project.html');
+    if (err) {
+     
+      next(new Error(err));
     }
       else{
-        console.log(doc)
-         res.render('project.html', { sessionDoc: doc});
+        shell.rm('-Rf', userSessionDir);
+
+       res.render('index.html');
       }
    
 })
-
  
-}// end module
+ } 
 
 
 
@@ -159,5 +180,6 @@ module.exports = {
   cloneProjectdir: cloneProjectdir,
   projectfiles: getProjectfiles,
   projectUser :getProjectUser,
-  projectTimeline : getProjectTimeline
+  projectTimeline : getProjectTimeline,
+  deleteProjectFiles : deleteProjectFiles
 };

@@ -60,6 +60,15 @@ module.exports = function (app) {
 
   });
 
+  /* Delete project files */
+  app.post('/removeProject', function (req, res, next) {
+    // console.log(req.query.projectUrl);
+    // res.send(req.query.projectUrl)
+     patProjectService.deleteProjectFiles(req, res, next);
+    
+ 
+   });
+
 
   // res.send("POST")
 

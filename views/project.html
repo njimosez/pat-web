@@ -2,56 +2,91 @@
 
 {% block content %}
 
-  <h2 class="text-center">{{ sessionDoc.projectName | capitalize}} Project Files </h2>
-  <p> Select to view the Procedure Summary Timeline </p>
-  <div class="row">
-    <div class="col-md-6 offset-md-3">
-  <div class="card  border-primary  mb-3" style="width: 40rem;">
-  <div class="row no-gutters">
-    <div class="col-md-4">
-     {% for item in sessionDoc.images %}
-     {% set imgurl = item.path %}
-      <img src="{{ imgurl | replace ("public","") |replace ("\\","/") }}" class="card-img" alt="{{ item.name}}"> 
-       {{ item.name | truncate(4, true, "") }}
-      {% else %}
-       <p>&nbsp;</p>
-      {% endfor %}
-    </div>
-    <div class="col-md-8">
-      <div class="card-body">
-        <h5 class="card-title">Procedure</h5>
-        <ul class="card-body list-group list-group-flush">
-          {% for item in sessionDoc.procedures %}
-            <li class="list-group-item">{{ item.name | truncate(4, true, ".")  }}</li>
-             <p class="card-text">This is the placeholder for the procedure description.</p>
-             <p class="card-text"><small class="text-muted"><a href="#" class="btn btn-success"> Summary Timeline</a></small></p>
+<h2 class="text-center">{{ sessionDoc.projectName | capitalize}} Project Files </h2>
+<p> Select to view the Procedure Summary Timeline </p>
+<div class="row">
+  <div class="col-md-6 offset-md-3">
+    <div class="card  border-primary  mb-3" style="width: 40rem;">
+      <div class="row no-gutters">
+        <div class="col-md-4">
+          {% for item in sessionDoc.images %}
+          {% set imgurl = item.path %}
+          <img src="{{ imgurl | replace ("public","") |replace ("\\","/") }}" class="card-img" alt="{{ item.name}}">
+          {{ item.name | truncate(4, true, "") }}
           {% else %}
-            <li>This would display if the 'item' collection were empty</li>
+          <p>&nbsp;</p>
           {% endfor %}
-        </ul>
-            
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">Procedure</h5>
+            <ul class="card-body list-group list-group-flush">
+              {% for item in sessionDoc.procedures %}
+              <li class="list-group-item">{{ item.name | truncate(4, true, ".")  }}</li>
+              <p class="card-text">This is the placeholder for the procedure description.</p>
+              <p class="card-text"><small class="text-muted"><a href="#" class="btn btn-success"> Summary
+                    Timeline</a></small></p>
+              {% else %}
+              <li>This would display if the 'item' collection were empty</li>
+              {% endfor %}
+            </ul>
+
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
- </div>
+
+<div class="row">
+  <div class="col-md-6 offset-md-3">
+    <div class="card border-dark text-center" style="width: 30rem;">
+      <h5 class="card-header">
+        Available Tasks Files
+      </h5>
+      <ul class="card-body text-dark list-group list-group-flush">
+        {% for item in sessionDoc.tasks %}
+        <li class="list-group-item">{{ item.name }}</li>
+        {% else %}
+        <li>This would display if the 'item' collection were empty</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
 </div>
-  
-  <div class="row">
-    <div class="col-md-6 offset-md-3">
-      <div class="card border-dark text-center" style="width: 30rem;">
-        <h5 class="card-header">
-   Available Tasks Files 
-  </h5>
-        <ul class="card-body text-dark list-group list-group-flush">
-          {% for item in sessionDoc.tasks %}
-            <li class="list-group-item">{{ item.name }}</li>
-          {% else %}
-            <li>This would display if the 'item' collection were empty</li>
-          {% endfor %}
-        </ul>
+
+<div class="main-panel">
+  <div class="container text-center">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <h4 class=" text-center">Available Tasks Files</h4>
+        <div class="well card-box">
+          <div class="accordion" id="accordionExample">
+            {% for item in sessionDoc.tasks %}
+            <div class="card">
+              <div class="card-header" id="headingTwo">
+                <h5 class="mb-0">
+                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#{{ item.name | length }}"
+                    aria-expanded="false" aria-controls="{{ item.name | length }}">
+                    {{ item.name }}
+                  </button>
+                </h5>
+              </div>
+              <div id="{{ item.name | length }}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                <div class="card-body">
+                  {{ item.name }}
+                </div>
+              </div>
+            </div> 
+            {% else %}
+            <p>This would display if the 'item' collection were empty</p>
+            {% endfor %}     
+           </div>
+        </div>
+      </div>
       </div>
     </div>
   </div>
+ 
 
 {% endblock %}
