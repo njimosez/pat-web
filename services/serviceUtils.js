@@ -8,6 +8,7 @@ const _ = require('underscore')
 
 const patProjectData = function getProjectFolderData (userSessionDir, giturl, folderName, next, req) {
   var projectFolderPath = getTree(userSessionDir + '/' + path.basename(giturl) + '/' + folderName)
+  console.log(projectFolderPath)
   if (_.isEmpty(projectFolderPath)) {
     shell.rm('-Rf', userSessionDir)
     next(new Error('This project ' + folderName + ' folder is empty or does not exist!'))
@@ -15,13 +16,14 @@ const patProjectData = function getProjectFolderData (userSessionDir, giturl, fo
   return projectFolderMeta = Object.byString(projectFolderPath, 'children')
 }
 
+// should be refactored into a helper folder for modularity 
 /**
- * @param  {} dir ; procedure or task file directory 
+ * @param  {} dir ; procedure or task file directory path
  */
 function getTree (dir) {
+  // get only yaml files
   data = dirTree(dir, { extensions: /\.(yml|png)$/ }, (item, PATH, stats) => {
   })
-
   return data
 }
 
@@ -43,7 +45,6 @@ Object.byString = function (o, s) {
   }
   return o
 }
-
 /* Export method */
 module.exports = {
   patProjectData: patProjectData
