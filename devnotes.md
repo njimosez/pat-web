@@ -32,5 +32,6 @@
 - Dry runs of various scenarios to over use cases 1 and 2
 
 # TODO : Test Team
+
 1. [] Validate Use Case 1 and 2
-2. []  Create unit test for code coverage
+2. [] Create unit tests for code coverage

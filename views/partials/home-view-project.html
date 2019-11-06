@@ -2,7 +2,7 @@
  timeline or to delete a PAT Project stored in the session repo  
 A user can only work on one project at a time -->
 
-<div class="find_title text-center">Project : {{  sessionDoc.projectName | capitalize }}</div>
+<div class="find_title text-center">Project : {{ sessionDoc.projectName | capitalize }}</div>
 <div class="btn-group" role="group" aria-label="Par">
     <form  method="GET" action="/summary">
         <input type="hidden" name="projectId" value={{ sessionDoc.userId}}>
@@ -21,7 +21,14 @@ A user can only work on one project at a time -->
       </button>
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div
+        class="modal fade"
+        id="exampleModalCenter"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true"
+    >
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -31,19 +38,23 @@ A user can only work on one project at a time -->
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p class="mb-0 text-center"> Do you want to delete PAT project{{  sessionDoc.projectName | capitalize }} from the local repository?  </p>
+                    <p class="mb-0 text-center">
+                        Do you want to delete PAT project{{ sessionDoc.projectName | capitalize }} from the local
+                        repository?
+                    </p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <form  method="POST" action="/removeProject">
-                        <input type="hidden" name="projectId" value={{ sessionDoc.userId}}>
+                    <form method="POST" action="/removeProject">
+                        <input type="hidden" name="projectId" value="{{" sessionDoc.userId}} />
                         <button id="giturl_button" type="submit" class="btn btn-danger">Remove</button>
-                   </form>
-                    
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<br>
-<p class="mb-0 text-white text-center"> You will need to remove this project before retrieving a new PAT project  </p>
+<br />
+<p class="mb-0 text-white text-center">
+    You will need to remove this project before retrieving and working on a new PAT
+</p>
