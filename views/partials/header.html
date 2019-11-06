@@ -22,26 +22,21 @@
 						<ul class="main_nav_list">
 							{% if sessionDoc %}
 
-							<li class="main_nav_item active">
-
-								<a href="/">Home</a>
-							</li>
-							<li class="main_nav_item">
-
-								<a href="/projectfiles?projectId={{ sessionDoc.userId}}">Project Files</a>
-
-
-							</li>
-							<li class="main_nav_item">
-								<!-- TODO URLIZE  -->
-								<a href="/summary?projectId={{ sessionDoc.userId}}">Summary Timeline</a>
-							</li>
+								<li class="main_nav_item ">
+									<a href="/">Home</a>
+								</li>
+								<li class="main_nav_item">
+									<a href="/projectfiles?projectId={{ sessionDoc.userId}}">Project Files</a>
+								</li>
+								<li class="main_nav_item">
+									<a href="/summary?projectId={{ sessionDoc.userId}}">Summary Timeline</a>
+								</li>
 							{% else %}
 
-							<li class="main_nav_item active">
+								<li class="main_nav_item">
 
-								<a href="/">Procedure Authoring Thing</a>
-							</li>
+									<a href="/">Procedure Authoring Thing</a>
+								</li>
 							{% endif %}
 						</ul>
 					</nav>
