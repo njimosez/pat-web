@@ -16,7 +16,7 @@ const patProjectData = function getProjectFolderData (userSessionDir, giturl, fo
 }
 
 /**
- * @param  {} dir ; procedure or task file directory path
+ * @param  {} dir ; procedure or task file directory 
  */
 function getTree (dir) {
   data = dirTree(dir, { extensions: /\.(yml|png)$/ }, (item, PATH, stats) => {
