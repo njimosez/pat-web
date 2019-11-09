@@ -31,6 +31,12 @@
 - Refactored the HTML code in the Project Files page to enable the view of procedure and tasks files details
 - Dry runs of various scenarios to over use cases 1 and 2
 
+# 11-09-19 -Edwin Ngwa
+
+- Decoupled and modularized the various layers of the application   
+- Implemented 3 separate embedded document db (project, procedure and task) 
+- Implemented viewing of the PAT procedures and tasks raw details in the project files page
+- More cleanup ,code formatting and comments  
 # TODO : Test Team
 
 1. [] Validate Use Case 1 and 2

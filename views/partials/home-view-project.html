@@ -6,13 +6,15 @@ A user can only work on one project at a time -->
 <div class="btn-group" role="group" aria-label="Par">
     <form  method="GET" action="/summary">
         <input type="hidden" name="projectId" value={{ sessionDoc.userId}}>
-        <button id="giturl_button" type="submit" class="btn btn-outline-primary btn-lg">  <i class="fa fa-tasks fa-fw"></i>Render Timeline</button>
+        <button id="giturl_button" type="submit" class="btn btn-outline-primary btn-lg">
+            <i class="fa fa-tasks fa-fw"></i>Render Timeline</button>
 
     </form>
 
     <form  method="GET" action="/projectfiles">
         <input type="hidden" name="projectId" value={{ sessionDoc.userId}}>
-        <button id="giturl_button" type="submit" class="btn btn-outline-secondary btn-lg"> <i class="fa fa-folder-open fa-fw"></i>View Project files</button>
+        <button id="giturl_button" type="submit" class="btn btn-outline-secondary btn-lg">
+            <i class="fa fa-folder-open fa-fw"></i>View Project files</button>
 
     </form>
     <!-- Remove Project from repo trigger modal -->
@@ -38,8 +40,8 @@ A user can only work on one project at a time -->
                     <form  method="POST" action="/removeProject">
                         <input type="hidden" name="projectId" value={{ sessionDoc.userId}}>
                         <button id="giturl_button" type="submit" class="btn btn-danger">Remove</button>
-                   </form>
-                    
+                    </form>
+
                 </div>
             </div>
         </div>

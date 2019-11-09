@@ -1,89 +1,100 @@
-{% extends "_page_layout.html" %} {% block content %}
+{% extends "_page_layout.html" %}
+{% block content %}
 
-<h2 class="text-center">{{ sessionDoc.projectName | capitalize}} Project Files</h2>
-<div class="main-panel">
-  <div class="container text-center">
-    <div class="row">
-      <div class="col-md-6 offset-md-3">
-        <h4 class=" text-center">EVA Procedures</h4>
+  <h2 class="text-center">{{ sessionDoc.projectName | capitalize}} Project Files</h2>
+  <div class="main-panel">
+    <div class="container text-center">
+      <div class="row">
+        <div class="col-md-6 offset-md-3">
+          <h4 class=" text-center">EVA Procedures</h4>
 
-        <div class="well card-box">
-          <div class="accordion" id="accordionprocedure">
-            {% for item in sessionDoc.procedures %}
-            <div class="card">
-              <div class="card-header" id="headingTwo">
-                <h5 class="mb-0">
-                  <button
+          <div class="well card-box">
+            <div class="accordion" id="accordionprocedure">
+              {% for item in sessionDoc.procedureMeta %}
+                <div class="card">
+                  <div class="card-header" id="headingTwo">
+                    <h5 class="mb-0">
+                      <button
                     class="btn btn-link collapsed"
-                    type="button"
+                    type="button" 
                     data-toggle="collapse"
                     data-target="#procedure{{ loop.index }}"
                     aria-expanded="false"
                     aria-controls="procedure{{ loop.index }}"
                   >
-                    {{ item.name |replace (".yml","") }}
-                  </button>
-                </h5>
-              </div>
-              <div
+
+                        {{ item.procedure_name| title }}
+
+                      </button>
+                    </h5>
+                  </div>
+                  <div
                 id="procedure{{ loop.index }}"
                 class="collapse"
                 aria-labelledby="headingTwo"
                 data-parent="#accordionprocedure"
               >
-                <div class="card-body">
-                  {{ item.name }} details goes here
-                </div>
-              </div>
-              <div class="row no-gutters">
-                <div class="col-md-6">
-                  {% for item in sessionDoc.images %} {% set imgurl = item.path %} <img src="{{ imgurl | replace
-                  ("public","") |replace ("\\","/") }}" class="card-img" alt="{{ item.name}}"> {{ item.name |
-                  replace(".png", "") }} {% else %}
-                  <p>&nbsp;</p>
-                  {% endfor %}
-                </div>
-                <div class="col-md-6 ">
-               
-                  <br />
-                  <br />
-                  <p class="card-text">
-                    <small class="text-muted">
-                      Toggle procedure to view details or select button to render a summary timeline
+                    <div class="card-body ">
+
+                      <h5>
+                        {{ item.name }}
+                      </h5>
+                      {% include "partials/raw-details.html" %}
+                    </div>
+                  </div>
+                  <div class="row no-gutters">
+                    <div class="col-md-6">
+                      {% for item in sessionDoc.images %}
+                        {% set imgurl = item.path %}
+                        <img src="{{ imgurl | replace
+                  ("public","") |replace ("\\","/") }}" class="card-img" alt="{{ item.name}}">
+                        {{ item.name |
+                  replace(".png", "") }}
+                      {% else %}
+                        <p>&nbsp;</p>
+                      {% endfor %}
+                    </div>
+                    <div class="col-md-6 ">
+
+                      <br/>
+                      <br/>
+                      <p class="card-text">
+                        <small class="text-muted">
+                      Click on title to view procedure details or select button to render an editable summary timeline
                     </small>
-                  </p>
-                  <p class="card-text">
-                    <a href="#" class="btn btn-primary">Summary Timeline</a>
-                  </p>
-                 
+                      </p>
+                      <p class="card-text">
+                        <a href="#" class="btn btn-primary">Summary Timeline</a>
+                      </p>
+
+                    </div>
+                  </div>
+                  <br/>
                 </div>
-              </div>
-              <br />
+              {% else %}
+                <p>This would display if the procedure collection is empty</p>
+              {% endfor %}
             </div>
-            {% else %}
-            <p>This would display if the 'item' collection were empty</p>
-            {% endfor %}
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-<br />
-<br />
+  <br/>
+  <br/>
 
-<div class="main-panel">
-  <div class="container text-center">
-    <div class="row">
-      <div class="col-md-6 offset-md-3">
-        <h4 class=" text-center">Available Tasks Files</h4>
-        <div class="well card-box">
-          <div class="accordion" id="accordiontasks">
-            {% for item in sessionDoc.tasks %}
-            <div class="card">
-              <div class="card-header" id="headingTwo">
-                <h5 class="mb-0">
-                  <button
+  <div class="main-panel">
+    <div class="container text-center">
+      <div class="row">
+        <div class="col-md-6 offset-md-3">
+          <h4 class=" text-center">Available Tasks Files</h4>
+          <div class="well card-box">
+            <div class="accordion" id="accordiontasks">
+              {% for item in sessionDoc.tasksMeta %}
+                <div class="card">
+                  <div class="card-header" id="headingTwo">
+                    <h5 class="mb-0">
+                      <button
                     class="btn btn-link collapsed"
                     type="button"
                     data-toggle="collapse"
@@ -91,29 +102,30 @@
                     aria-expanded="false"
                     aria-controls="task{{ loop.index }}"
                   >
-                    {{ item.name }}
-                  </button>
-                </h5>
-              </div>
-              <div
+                        {{ item.title}}
+                      </button>
+                    </h5>
+                  </div>
+                  <div
                 id="task{{ loop.index }}"
                 class="collapse"
                 aria-labelledby="headingTwo"
                 data-parent="#accordionExample"
               >
-                <div class="card-body">
-                  {{ item.name }} details goes here
+                    <div class="card-body">
+                      {{ item.name |title }}
+                      {% include "partials/raw-details.html" %}
+                    </div>
+                  </div>
                 </div>
-              </div>
+              {% else %}
+                <p>This would display if the task collection is empty</p>
+              {% endfor %}
             </div>
-            {% else %}
-            <p>This would display if the 'item' collection were empty</p>
-            {% endfor %}
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
 {% endblock %}
