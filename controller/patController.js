@@ -5,6 +5,7 @@
  */
 
 const patProjectService = require('../services/patProjectservice.js');
+const patSummaryService = require('../services/patSummaryservice.js');
 const path = require('path');
 const { check, validationResult } = require('express-validator');
 const _ = require('underscore');
@@ -37,7 +38,7 @@ module.exports = function (app) {
 
   /* Summary Timeline page */
   app.get('/summary', function (req, res, next) {
-    patProjectService.projectTimeline(req, res, next);
+    patSummaryService.projectTimeline(req, res, next);
   });
 
   /* Delete project files */

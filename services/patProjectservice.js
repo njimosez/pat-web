@@ -48,37 +48,26 @@ var EvaTasksDoc = {'userId': req.sessionID, 'task': [{}]};
 
 //retrieve procedure data and push to procedure object 
 myPATProjectDoc.procedureMeta = serviceUtils.patProjectData(userSessionDir, giturl, procedureFolderName, next, req);
-var tempProceduresDoc = [];
 for (var x in myPATProjectDoc.procedureMeta) {
   var filename = myPATProjectDoc.procedureMeta[x].name;
   var procedureDoc = serviceUtils.JSONData(userSessionDir, giturl, procedureFolderName, filename, next, req);
   EvaProceduresDoc.procedure.push(procedureDoc);
-  tempProceduresDoc.push(procedureDoc);
+  myPATProjectDoc.procedureMeta[x].procedure_name = procedureDoc.procedure_name
+ 
 }
-// add descriptive procedure names into each procedureMeta document
-for (x in tempProceduresDoc) {
-  var procedure_name = tempProceduresDoc[x].procedure_name; 
-  myPATProjectDoc.procedureMeta[x].procedure_name = procedure_name;
-}
-
 // retrieve taksdata and push to task object
 myPATProjectDoc.tasksMeta = serviceUtils.patProjectData(userSessionDir, giturl, tasksFolderName, next, req);
-var tempTasksDoc = [];
 for (x in myPATProjectDoc.tasksMeta) {
   var taskfilename = myPATProjectDoc.tasksMeta[x].name;
   var taskDoc = serviceUtils.JSONData(userSessionDir, giturl, tasksFolderName, taskfilename, next, req);
-  tempTasksDoc.push(taskDoc);
-  EvaTasksDoc.task.push(taskDoc);
-}
-//add descriptive task title into each taskMeta document 
-for (x in tempTasksDoc) {
-  var title = tempTasksDoc[x].title;
-  myPATProjectDoc.tasksMeta[x].title = title;
+  myPATProjectDoc.tasksMeta[x].title = taskDoc.title;
+    EvaTasksDoc.task.push({
+      filename :taskfilename,
+      taskDoc});
 }
 
  // extracting image from retrieved img folder and add to pat object
 myPATProjectDoc.images = serviceUtils.patProjectData(userSessionDir, giturl, procedureImage, next, req);
-
 
     // persist the objects untill session expiry and render response
     procedureModel.createProcedure(EvaProceduresDoc,req,next);
@@ -90,19 +79,15 @@ myPATProjectDoc.images = serviceUtils.patProjectData(userSessionDir, giturl, pro
 
 const projectUser = function (req, res, next) {
   projectModel.getProjectUser(req, res, next);
-}; // end module
+}; 
 
 const projectfiles = function (req, res, next) {
   projectModel.getProjectfiles(req, res, next);
- }; // end module
-
-const projectTimeline = function (req, res, next) {
-  projectModel.getProjectTimeline(req, res, next);
- };
+ }; 
 
 const removeProject = function (req, res, next) {
    projectModel.deleteProjectFiles(req, res, next);
- };//
+ };
 
 
 /* Export method */
@@ -110,6 +95,5 @@ module.exports = {
   cloneProjectdir: cloneProjectdir,
   projectfiles: projectfiles,
   projectUser: projectUser,
-  projectTimeline: projectTimeline,
   removeProject: removeProject
 };
