@@ -1,0 +1,110 @@
+//begin testing
+const assert = require('assert');
+const expect = require('chai');
+const { check, validationResult } = require('express-validator');
+const _ = require('underscore');
+var req = {sessionID: 'fakeID'};
+var res = {render: function(html, object){
+  console.log('res.render(' + html + ', ' + object + ')');
+  }
+};
+var next = function(){console.log('next')};
+
+describe('Array of URL\'s for comparing with URL input.', function(){
+    describe('Version 1: hardcoded array in post statement.', function(){
+        //v1
+        it('Should report that the url passes.', function(){
+            /*var appPost = [
+                check('https://gitlab.com/xOPERATIONS/sts-134').equals('https://gitlab.com/xOPERATIONS/sts-134'),
+                check('https://gitlab.com/xOPERATIONS/sts-134').equals('https://gitlab.com/xOPERATIONS/sts-135'),
+                check('https://gitlab.com/xOPERATIONS/sts-134').equals('https://gitlab.com/xOPERATIONS/sts-136')
+            ];*/ 
+            var errorcount = 0;
+                if('https://gitlab.com/xOPERATIONS/sts-134'!='https://gitlab.com/xOPERATIONS/sts-134'){
+                    errorcount++;
+                }
+                if('https://gitlab.com/xOPERATIONS/sts-134'!='https://gitlab.com/xOPERATIONS/sts-135'){
+                    errorcount++;
+                }
+                if('https://gitlab.com/xOPERATIONS/sts-134'!='https://gitlab.com/xOPERATIONS/sts-136'){
+                    errorcount++;
+                }
+            //const errors = validationResult(req);
+            assert.equal(errorcount, 2, 'Error found: Invalid URL');
+        });
+    });
+
+    describe('Version 2: hardcoded array outside post statment.', function(){
+        //v2
+        it('Should report that the url passes.', function(){
+        var urlarray = [
+            'https://gitlab.com/xOPERATIONS/sts-134',
+            'https://gitlab.com/xOPERATIONS/sts-135',
+            'https://gitlab.com/xOPERATIONS/sts-136'
+        ]
+        //var appPost = [check(urlarray).contains('https://gitlab.com/xOPERATIONS/sts-134')]
+        var errorcount = 0;
+        if(urlarray.indexOf('https://gitlab.com/xOPERATIONS/sts-134') < 0){
+            errorcount++;
+        }
+        //const errors = validationResult(req);
+        //expect.assert.isEmpty(errorcount, 'Error found: Invalid URL')
+        assert.equal(errorcount, 0, 'Error found: Invalid URL');
+        });
+    });
+
+    describe('Version 3: Array stored in MongoDB file.', function(){
+        //v3
+        it('Should report that the url passes.', function(){
+            const Datastore = require('nedb');
+            const path = require('path');
+            var urldb = new Datastore({ filename: 'pat-url.db', autoload: true });
+            var urlarray = ['1', '2', '3'];
+            console.log(urlarray);
+            var i = 0;
+
+            urldb.insert({"_id":"0","url": "https://gitlab.com/xOPERATIONS/sts-134"});
+            urldb.insert({"_id":"1","url": "https://gitlab.com/xOPERATIONS/sts-135"});
+            urldb.insert({"_id":"2","url": "https://gitlab.com/xOPERATIONS/sts-136"});
+            console.log('Created', 3, 'URL(s)');
+
+            /*
+            urlarray = urldb.getAllData();
+            console.log(urlarray);
+            console.log(urldb.getAllData());
+            */
+
+            //var errorcount = 0;
+            urldb.find({}, function(err, docs) {
+              var errorcount2 = 0;
+              docs.forEach(function(d) {
+                console.log(d.url + ' is loading...');
+                if('https://gitlab.com/xOPERATIONS/sts-134'.localeCompare(d.url) == 0){
+                    errorcount2++;
+                    console.log('match found!');
+                }
+              });
+              assert.equal(errorcount2, 1, 'Error found: Invalid URL');
+            });
+            /*
+            console.log(errorcount);
+            urldb.findOne({url: 'https://gitlab.com/xOPERATIONS/sts-134'}, function(err, doc) {
+                if(Array(doc).length > 0){
+                    errorcount++
+                }
+            });
+            */
+            /*var appPost = [check(urlarray).contains('https://gitlab.com/xOPERATIONS/sts-134')]
+            if(urlarray.indexOf('https://gitlab.com/xOPERATIONS/sts-134') < 0){
+                errorcount++;
+            }*/
+            //const errors = validationResult(req);
+            //expect.assert.isEmpty(errorcount, 'Error found: Invalid URL')
+            //assert.equal(errorcount, 1, 'Error found: Invalid URL');
+
+            urldb.remove({}, { multi: true }, function(err, numDeleted) {
+                console.log('Deleted', numDeleted, 'URL(s)');
+           });
+        });
+    });
+});
