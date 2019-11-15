@@ -1,6 +1,8 @@
 //begin testing
 const assert = require('assert');
 //const expect = require('chai');
+const shell = require('shelljs');
+const path = require('path');
 
 //start of tests
 console.log('testing start.')
@@ -18,7 +20,7 @@ describe('POST project', function() {
     const path = require('path');
     const { check, validationResult } = require('express-validator');
     const patProjectdir = './public/projects/';
-    const simpleGit = require('simple-git')(patProjectdir+'fakeID');
+
 
     //Send https://gitlab.com/xOPERATIONS/sts-134 to projectdownloader
     var req = {sessionID: 'fakeID'};
@@ -29,6 +31,9 @@ describe('POST project', function() {
     var next = function(){console.log('next')};
     var tmpUrl = 'https://gitlab.com/xOPERATIONS/stx-134';
     var test = 0;
+    var userSessionDir = patProjectdir + req.sessionID;
+    shell.mkdir('-p', patProjectdir, userSessionDir);
+    const simpleGit = require('simple-git')(userSessionDir);
 
     //d1.d1.it1. test for error in URL
     it('Should return 1 when the error is caught.', function() {
@@ -36,11 +41,13 @@ describe('POST project', function() {
       //check for error
       simpleGit.clone(tmpUrl, function (err, data) {
         if (err) {
+          shell.rm('-Rf', userSessionDir);
           test = 1;
-          console.log('test set to 1')
+          //console.log('test set to 1')
         }else {
+          shell.rm('-Rf', userSessionDir);
           test = -1;
-          console.log('test set to -1')
+          //console.log('test set to -1')
         }
         assert(test, 1, 'error not caught: '+test);
       });
