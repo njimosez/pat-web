@@ -9,6 +9,8 @@ const patSummaryService = require('../services/patSummaryservice.js');
 const path = require('path');
 const { check, validationResult } = require('express-validator');
 const _ = require('underscore');
+const Datastore = require('nedb');
+var urldb = new Datastore({ filename: 'pat-url.db', autoload: true });
 
 module.exports = function (app) {
   /* Index page */
@@ -23,12 +25,21 @@ module.exports = function (app) {
     // refer to https://express-validator.github.io/docs/ 
     check('giturl').contains('sts')
   ], function (req, res, next) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      next(new Error('Invalid URL: Not a Recognized PAT project repository'));
-    } else {
-      patProjectService.cloneProjectdir(req, res, next, req.body.giturl);
-    }
+    urldb.find({}, function(err, docs) {
+      const errors = validationResult(req);
+      var errorcount2 = 0;
+      docs.forEach(function(d) {
+        if(req.body.giturl.localeCompare(d.url) == 0){
+            errorcount2++;
+            console.log('Match Found!')
+        }
+      });
+      if (errorcount2!=1 || !errors.isEmpty()) {
+        next(new Error('Invalid URL: Not a Recognized PAT project repository'));
+      } else {
+        patProjectService.cloneProjectdir(req, res, next, req.body.giturl);
+      }
+    });
   });
 
   /* Project page if project already in local repos*/
