@@ -7,10 +7,12 @@
 const patProjectService = require('../services/patProjectservice.js');
 const patSummaryService = require('../services/patSummaryservice.js');
 const path = require('path');
-const { check, validationResult } = require('express-validator');
+const { check, validationResult, matchedData, body } = require('express-validator');
 const _ = require('underscore');
-const Datastore = require('nedb');
-var urldb = new Datastore({ filename: 'pat-url.db', autoload: true });
+const urlarray = [
+  'https://gitlab.com/xOPERATIONS/sts-134',
+  'https://gitlab.com/xOPERATIONS/sts-135'
+]
 
 module.exports = function (app) {
   /* Index page */
@@ -20,26 +22,26 @@ module.exports = function (app) {
   });
 
   /* Project page */
-  app.post('/project', [
-    // TODO validate entry against a string or modify to use an array or regex
-    // refer to https://express-validator.github.io/docs/ 
-    check('giturl').contains('sts')
-  ], function (req, res, next) {
-    urldb.find({}, function(err, docs) {
-      const errors = validationResult(req);
-      var errorcount2 = 0;
-      docs.forEach(function(d) {
-        if(req.body.giturl.localeCompare(d.url) == 0){
-            errorcount2++;
-            console.log('Match Found!')
-        }
-      });
-      if (errorcount2!=1 || !errors.isEmpty()) {
-        next(new Error('Invalid URL: Not a Recognized PAT project repository'));
-      } else {
-        patProjectService.cloneProjectdir(req, res, next, req.body.giturl);
+  app.post('/project', 
+    body('giturl').custom((value, {req}) => {
+      console.log('Success: body().custom() ran. ' + urlarray + " : " + value);
+      if (urlarray.indexOf(value) < 0){
+        console.log('Success: urlarray function crashed as intended.');
+        throw new Error('URL not found in verification array');
       }
-    });
+      console.log('Success: urlarray function ran as intended.');
+      return true;
+    })/*,
+    [// TODO validate entry against a string or modify to use an array or regex
+      // refer to https://express-validator.github.io/docs/ 
+      check('giturl').contains('sts')]*/
+    , function (req, res, next) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      next(new Error('Invalid URL: Not a Recognized PAT project repository'));
+    } else {
+      patProjectService.cloneProjectdir(req, res, next, req.body.giturl);
+    }
   });
 
   /* Project page if project already in local repos*/
