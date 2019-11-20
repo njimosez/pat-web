@@ -1,0 +1,86 @@
+{
+    "EV1":[
+        {"name":"EGRESS/SETUP",
+            "hours":0,
+            "minutes":25,
+            "color":"#000000"
+        },
+        {"name":"MISSE 7 RETRIEVE",
+            "hours":0,
+            "minutes":60,
+            "color":"#FFD700"
+        },
+        {"name":"MISSE 8 Install",
+            "hours":0,
+            "minutes":40,
+            "color":"#FFD700"
+        },
+        {"name":"P3/P4 NH3 Jumper Install",
+            "hours":0,
+            "minutes":35,
+            "color":"#00FFFF"
+        },
+        {"name":"P5/P6 NH3 Jumper Install / N2 Vent",
+            "hours":0,
+            "minutes":35,
+            "color":"#00FFFF"
+        },
+        {"name":"EWC Antenna Install",
+            "hours":2,
+            "minutes":20,
+            "color":"#90EE90"
+        },
+        {"name":"VTEB Cleanup",
+            "hours":0,
+            "minutes":25,
+            "color":"#00FFFF"
+        },
+        {"name":"Cleanup / Ingress",
+            "hours":0,
+            "minutes":30,
+            "color":"#000000"
+        }
+    ],
+    "EV3":[
+        {"name":"EGRESS/SETUP",
+            "hours":0,
+            "minutes":25,
+            "color":"#000000"
+        },
+        {"name":"MISSE 7 RETRIEVE",
+            "hours":0,
+            "minutes":60,
+            "color":"#FFD700"
+        },
+        {"name":"S3 CETA Light Install",
+            "hours":0,
+            "minutes":25,
+            "color":"#000000"
+        },
+        {"name":"Stbd SARJ Cover 7 Install",
+            "hours":0,
+            "minutes":25,
+            "color":"#000000"
+        },
+        {"name":"P3/P4 NH3 Jumper Install",
+            "hours":0,
+            "minutes":25,
+            "color":"#00FFFF"
+        },
+        {"name":"P3/P4 NH3 Jumper Temp Stow",
+            "hours":0,
+            "minutes":35,
+            "color":"#00FFFF"
+        },
+        {"name":"EWC Antenna Install",
+            "hours":2,
+            "minutes":45,
+            "color":"#90EE90"
+        },
+        {"name":"Cleanup / Ingress",
+            "hours":0,
+            "minutes":30,
+            "color":"#000000"
+        }
+    ]
+}
