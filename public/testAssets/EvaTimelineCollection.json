@@ -1,0 +1,285 @@
+{
+  "procedureTasks": [
+    {
+      "file": "egress.yml",
+      "roles": {
+        "crewA": "EV1",
+        "crewB": "EV3"
+      }
+    },
+    {
+      "file": "misse7.yml",
+      "roles": {
+        "crewA": "EV1",
+        "crewB": "EV3"
+      },
+      "color": "#FFD700"
+    },
+    {
+      "file": "misse8.yml",
+      "roles": {
+        "crewA": "EV1"
+      },
+      "color": "#FFD700"
+    },
+    {
+      "file": "s3-ceta-light-install.yml",
+      "roles": {
+        "crewA": "EV3"
+      }
+    },
+    {
+      "file": "stbd-sarj-cover-7-install.yml",
+      "roles": {
+        "crewA": "EV3"
+      }
+    },
+    {
+      "file": "p3-p4-nh3-jumper-install.yml",
+      "roles": {
+        "crewA": "EV1",
+        "crewB": "EV3"
+      },
+      "color": "#00FFFF"
+    },
+    {
+      "file": "p5-p6-nh3-jumper-install-n2-vent.yml",
+      "roles": {
+        "crewA": "EV1"
+      },
+      "color": "#00FFFF"
+    },
+    {
+      "file": "p3-p4-nh3-jumper-temp-stow.yml",
+      "roles": {
+        "crewA": "EV3"
+      },
+      "color": "#00FFFF"
+    },
+    {
+      "file": "ewc-antenna-install.yml",
+      "roles": {
+        "crewA": "EV1",
+        "crewB": "EV3"
+      },
+      "color": "#90EE90"
+    },
+    {
+      "file": "vteb-reconfig.yml",
+      "roles": {
+        "crewA": "EV1"
+      },
+      "color": "#00FFFF"
+    },
+    {
+      "file": "ingress.yml",
+      "roles": {
+        "crewA": "EV1",
+        "crewB": "EV3"
+      }
+    }
+  ],
+  "taskDetails": [
+    [
+      {
+        "file": "egress.yml"
+      },
+      {
+        "title": "EGRESS/SETUP"
+      },
+      {
+        "name": "crewA",
+        "description": "Crewmember exiting A/L first, in charge of operating hatch",
+        "duration": {
+          "minutes": 25
+        }
+      },
+      {
+        "name": "crewB",
+        "description": "Crewmember exiting A/L second, in charge of operating UIA",
+        "duration": {
+          "minutes": 25
+        }
+      }
+    ],
+    [
+      {
+        "file": "ewc-antenna-install.yml"
+      },
+      {
+        "title": "EWC Antenna Install"
+      },
+      {
+        "name": "crewA",
+        "description": "Please add description",
+        "duration": {
+          "hours": 2,
+          "minutes": 20
+        }
+      },
+      {
+        "name": "crewB",
+        "duration": {
+          "hours": 2,
+          "minutes": 45
+        }
+      }
+    ],
+    [
+      {
+        "file": "ingress.yml"
+      },
+      {
+        "title": "Cleanup / Ingress"
+      },
+      {
+        "name": "crewA",
+        "description": "Please add description",
+        "duration": {
+          "minutes": 30
+        }
+      },
+      {
+        "name": "crewB",
+        "duration": {
+          "minutes": 30
+        }
+      }
+    ],
+    [
+      {
+        "file": "misse7.yml"
+      },
+      {
+        "title": "MISSE 7 RETRIEVE"
+      },
+      {
+        "name": "crewA",
+        "description": "Please add description",
+        "duration": {
+          "minutes": 60
+        }
+      },
+      {
+        "name": "crewB",
+        "duration": {
+          "minutes": 60
+        }
+      }
+    ],
+    [
+      {
+        "file": "misse8.yml"
+      },
+      {
+        "title": "MISSE 8 Install"
+      },
+      {
+        "name": "crewA",
+        "description": "Please add description",
+        "duration": {
+          "minutes": 40
+        }
+      }
+    ],
+    [
+      {
+        "file": "p3-p4-nh3-jumper-install.yml"
+      },
+      {
+        "title": "P3/P4 NH3 Jumper Install"
+      },
+      {
+        "name": "crewA",
+        "description": "Please add description",
+        "duration": {
+          "minutes": 35
+        }
+      },
+      {
+        "name": "crewB",
+        "duration": {
+          "minutes": 25,
+          "offset": {
+            "minutes": 10
+          }
+        }
+      }
+    ],
+    [
+      {
+        "file": "p3-p4-nh3-jumper-temp-stow.yml"
+      },
+      {
+        "title": "P3/P4 NH3 Jumper Temp Stow"
+      },
+      {
+        "name": "crewA",
+        "description": "Please add description",
+        "duration": {
+          "minutes": 35
+        }
+      }
+    ],
+    [
+      {
+        "file": "p5-p6-nh3-jumper-install-n2-vent.yml"
+      },
+      {
+        "title": "P5/P6 NH3 Jumper Install / N2 Vent"
+      },
+      {
+        "name": "crewA",
+        "description": "Please add description",
+        "duration": {
+          "minutes": 35
+        }
+      }
+    ],
+    [
+      {
+        "file": "s3-ceta-light-install.yml"
+      },
+      {
+        "title": "S3 CETA Light Install"
+      },
+      {
+        "name": "crewA",
+        "description": "Please add description",
+        "duration": {
+          "minutes": 25
+        }
+      }
+    ],
+    [
+      {
+        "file": "stbd-sarj-cover-7-install.yml"
+      },
+      {
+        "title": "Stbd SARJ Cover 7 Install"
+      },
+      {
+        "name": "crewA",
+        "description": "Please add description",
+        "duration": {
+          "minutes": 25
+        }
+      }
+    ],
+    [
+      {
+        "file": "vteb-reconfig.yml"
+      },
+      {
+        "title": "VTEB Cleanup"
+      },
+      {
+        "name": "crewA",
+        "description": "Please add description",
+        "duration": {
+          "minutes": 25
+        }
+      }
+    ]
+  ]
+}
