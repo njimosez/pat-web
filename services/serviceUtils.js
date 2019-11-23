@@ -24,7 +24,7 @@ const JSONData = function YAMLtoJSON(userSessionDir, giturl, folderName, filenam
   var projectFolderPath = userSessionDir + '/' + path.basename(giturl) + '/' + folderName;
   var yamlFile = projectFolderPath + "/" + filename;
   try {
-    
+
     const doc = YAML.load(yamlFile);
     return doc;
   } catch (e) {
@@ -37,10 +37,10 @@ const YAMLData = function JSONtoYAML(jsonStr, userSessionDir, giturl, folderName
   try {
     //var obj = JSON.parse(jsonStr);
     console.log(projectFolderPath);
-  var yamlStr = YAML.stringify(jsonStr,4); //> projectFolderPath/test.yml; 
-  var stream = fs.createWriteStream(projectFolderPath + '/test.yml');
-  stream.write(yamlStr);
-     return yamlStr;
+    var yamlStr = YAML.stringify(jsonStr, 4); //> projectFolderPath/test.yml; 
+    var stream = fs.createWriteStream(projectFolderPath + '/test.yml');
+    stream.write(yamlStr);
+    return yamlStr;
   } catch (e) {
     console.log(e);
   }
@@ -50,8 +50,10 @@ const YAMLData = function JSONtoYAML(jsonStr, userSessionDir, giturl, folderName
  */
 function getTree(dir) {
   // get only yaml files
-  data = dirTree(dir, { normalizePath: true, extensions: /\.(yml|png)$/ }, (item, PATH, stats) => {
-  });
+  data = dirTree(dir, {
+    normalizePath: true,
+    extensions: /\.(yml|png)$/
+  }, (item, PATH, stats) => {});
   return data;
 }
 
@@ -76,19 +78,48 @@ Object.byString = function (o, s) {
 
 
 function getColumnHeaderTextByActor(columns) {
-    var columnHeaderText = [];
-    for (var x in columns){
-        if((columns[x].actors) !="*"){
-            columnHeaderText.push(columns[x].display);
-        }
-       
+  var columnHeaderText = [];
+  for (var x in columns) {
+    if ((columns[x].actors) != "*") {
+      columnHeaderText.push(columns[x].display);
     }
-    return(columnHeaderText);
+
   }
+  return (columnHeaderText);
+}
+
+function timeConvert(taskHours, taskMin) {
+  let hours;
+  let mins;
+  let cellHeight;
+  if ((taskMin > 59)) {
+    hours = taskMin / 60;
+    mins = "00";
+    cellHeight = taskMin * 2;
+  } else if (_.isEmpty(taskHours)) {
+    hours = "00";
+    mins = taskMin;
+    cellHeight = taskMin * 2;
+  } else if (_.isEmpty(taskMin)) {
+    hours = "0" + taskHours;
+    mins = "00";
+    cellHeight = (taskHours * 60) * 2;
+  } else {
+    hours = "0" + taskHours;
+    mins = taskMin;
+    cellHeight = taskMin + (taskHours * 60) * 2;
+  }
+  return ({
+    hours: hours,
+    minutes: mins,
+    cellHeight: cellHeight
+  });
+}
 /* Export method */
 module.exports = {
   patProjectData: patProjectData,
   JSONData: JSONData,
-  YAMLData : YAMLData,
-  getColumnHeaderTextByActor : getColumnHeaderTextByActor
+  YAMLData: YAMLData,
+  getColumnHeaderTextByActor: getColumnHeaderTextByActor,
+  timeConvert: timeConvert
 };

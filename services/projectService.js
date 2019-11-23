@@ -30,8 +30,7 @@ const cloneProjectdir = function (req, res, next, giturl) {
     if (err) {
       shell.rm('-Rf', userSessionDir);
       next(new Error(err)); // Pass errors to Express.
-    } else  
-    {
+    } else {
 
       var myMaestroProjectDoc = {
         'projectName': path.basename(giturl),
@@ -41,17 +40,23 @@ const cloneProjectdir = function (req, res, next, giturl) {
         'tasksMeta': [],
         'images': []
       };
-     // var EvaProceduresDoc = {'userId': req.sessionID, 'procedure': [], 'taskdetails': []};
-    //  var EvaTasksDoc = {'userId': req.sessionID, 'tasks': []};
-      var procedureTimeline = {'projectName': path.basename(giturl),
-      'projectURL': giturl,
-      'userId': req.sessionID, 'timeline': []};
-     
-      //retrieve object data from the procedure folder 
-    //  var timeline = {'userId': req.sessionID, 'columns' : []}; // split in two 
-      // two colums crew a crew b
-       var EvaProcedure = {'userId': req.sessionID, 'columnHeaderText' : [],  'procedureDetails' : []}; // get rolr
-       var EvaTasks = {'userId': req.sessionID, 'tasksDetails' : []}; // duration is static
+
+      var procedureTimeline = {
+        'projectName': path.basename(giturl),
+        'projectURL': giturl,
+        'userId': req.sessionID,
+        'timeline': []
+      };
+
+      var EvaProcedure = {
+        'userId': req.sessionID,
+        'columnHeaderText': [],
+        'procedureDetails': []
+      }; // get rolr
+      var EvaTasks = {
+        'userId': req.sessionID,
+        'tasksDetails': []
+      }; // duration is static
 
       var procedureMetaDoc = serviceUtils.patProjectData(userSessionDir, giturl, procedureFolderName, next, req);
 
@@ -59,25 +64,24 @@ const cloneProjectdir = function (req, res, next, giturl) {
         let filename = procedureMetaDoc[x].name;
         let procedureDoc = serviceUtils.JSONData(userSessionDir, giturl, procedureFolderName, filename, next, req);
 
-        myMaestroProjectDoc.procedureMeta.push(
-          {
-            filename: procedureMetaDoc[x].name,
-            path: procedureMetaDoc[x].path,
-            procedure_name: procedureDoc.procedure_name
-          });
+        myMaestroProjectDoc.procedureMeta.push({
+          filename: procedureMetaDoc[x].name,
+          path: procedureMetaDoc[x].path,
+          procedure_name: procedureDoc.procedure_name
+        });
 
-          EvaProcedure.columnHeaderText =  serviceUtils.getColumnHeaderTextByActor(procedureDoc.columns);
-          EvaProcedure.procedureDetails = procedureDoc;
+        EvaProcedure.columnHeaderText = serviceUtils.getColumnHeaderTextByActor(procedureDoc.columns);
+        EvaProcedure.procedureDetails = procedureDoc;
       }
-      
-      
+
+
       // retrieve object from the task folder
       var tasksMetaDoc = serviceUtils.patProjectData(userSessionDir, giturl, tasksFolderName, next, req);
 
       for (x in tasksMetaDoc) {
         var taskfilename = tasksMetaDoc[x].name;
         var taskDoc = serviceUtils.JSONData(userSessionDir, giturl, tasksFolderName, taskfilename, next, req);
-      
+
         myMaestroProjectDoc.tasksMeta.push({
           filename: taskfilename,
           title: taskDoc.title,
@@ -85,12 +89,15 @@ const cloneProjectdir = function (req, res, next, giturl) {
         });
 
         var tasks = taskDoc.roles;
-        for (var t in tasks){
-         // console.log( "File: " + taskfilename + " crew: " + tasks[v].name + " title:  " + taskDoc.title + " duration: " + tasks[v].duration.minutes);
-         var obj =   _.object(['file','title','crew','duration'],[taskfilename,taskDoc.title,tasks[t].name,tasks[t].duration.minutes]);
-         EvaTasks.tasksDetails.push(obj);
+        for (var t in tasks) {
+          var duration = serviceUtils.timeConvert(tasks[t].duration.hours, tasks[t].duration.minutes);
+
+          var obj = _.object(['file', 'title', 'crew', 'hours', 'minutes', 'cellHeight'], [taskfilename, taskDoc.title,
+            tasks[t].name, duration.hours, duration.minutes, duration.cellHeight
+          ]);
+          EvaTasks.tasksDetails.push(obj);
         }
-        
+
       }
       var imagedoc = serviceUtils.patProjectData(userSessionDir, giturl, procedureImage, next, req);
       for (x in imagedoc) {
@@ -99,32 +106,27 @@ const cloneProjectdir = function (req, res, next, giturl) {
           path: imagedoc[x].path
         });
       }
-   //  procedureModel.createProcedure(EvaProceduresDoc,req,next);
-    //  taskModel.createTaskDoc(procedureTasks,req, next);
-   // console.log(columns);
- // const header =  parseUtils.getColumnHeaderTextByActor(procedures);
- // console.log(timeline);
- // res.send(timeline);
-      timelineModel.createObjects(EvaProcedure,EvaTasks,req,next);
-   //   res.send({EvaProcedure,EvaTasks});
-     projectModel.createProject(userSessionDir, myMaestroProjectDoc,req,res,next);
+
+      timelineModel.createObjects(EvaProcedure, EvaTasks, req, next);
+
+      projectModel.createProject(userSessionDir, myMaestroProjectDoc, req, res, next);
     }
 
   });
-};// end module
+}; // end module
 
 
 const projectUser = function (req, res, next) {
   projectModel.getProjectUser(req, res, next);
-}; 
+};
 
 const projectfiles = function (req, res, next) {
   projectModel.getProjectfiles(req, res, next);
- }; 
+};
 
 const removeProject = function (req, res, next) {
-   projectModel.deleteProjectFiles(req, res, next);
- };
+  projectModel.deleteProjectFiles(req, res, next);
+};
 
 
 /* Export method */

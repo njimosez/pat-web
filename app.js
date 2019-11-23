@@ -29,13 +29,17 @@ app.set('view engine', 'njk');
 var jsonParser = bodyParser.json();
 
 // create application/x-www-form-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
+var urlencodedParser = bodyParser.urlencoded({
+  extended: false
+});
 
 //static file setup
 app.use(express.static('./public'));
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
 // parse application/json
 app.use(bodyParser.json());
@@ -51,7 +55,7 @@ app.use(session({
   cookie: {
     maxAge: 1000 * 60 * 60 * 24 * 7
   }
-  // TODO : prune project dir at session expiry  
+    
 }));
 
 //view/template engine setup
@@ -88,4 +92,3 @@ function cleanup() {
   shell.rm('-Rf', patProjectdir);
   shell.rm('-Rf', '*.db');
 }
-

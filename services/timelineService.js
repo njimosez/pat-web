@@ -18,16 +18,14 @@ const procedureImage = 'images/';
 const patProjectdir = './public/projects/';
 
 
-
-
 const projectTimeline = function (req, res, next) {
-// get the collection in procedure
+  // get the collection in procedure
   projectModel.getProjectTimeline(req, res, next);
- };
+};
 
 
 /* Export method */
 module.exports = {
   projectTimeline: projectTimeline,
-  
+
 };

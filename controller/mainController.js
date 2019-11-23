@@ -8,7 +8,12 @@ const projectService = require('../services/projectService.js');
 const timelineModel = require('../model/timelineModel.js');
 const projectModel = require('../model/projectModel.js');
 const path = require('path');
-const { check, validationResult, matchedData, body } = require('express-validator');
+const {
+  check,
+  validationResult,
+  matchedData,
+  body
+} = require('express-validator');
 const _ = require('underscore');
 const urlarray = [
   'https://gitlab.com/xOPERATIONS/sts-134',
@@ -25,20 +30,23 @@ module.exports = function (app) {
   });
 
   /* Project page */
-  app.post('/project', 
-    body('giturl').custom((value, {req}) => {
-          if (urlarray.indexOf(value) < 0){
-         throw new Error('URL not found in verification array');
+  app.post('/project',
+    body('giturl').custom((value, {
+      req
+    }) => {
+      if (urlarray.indexOf(value) < 0) {
+        throw new Error('URL not found in verification array');
       }
-       return true;
-    }), function (req, res, next) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      next(new Error('Invalid URL: Not a Recognized Maestro project repository'));
-    } else {
-      projectService.cloneProjectdir(req, res, next, req.body.giturl);
-    }
-  });
+      return true;
+    }),
+    function (req, res, next) {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        next(new Error('Invalid URL: Not a Recognized Maestro project repository'));
+      } else {
+        projectService.cloneProjectdir(req, res, next, req.body.giturl);
+      }
+    });
 
   /* Project page if project already in local repos*/
   app.get('/projectfiles', function (req, res, next) {

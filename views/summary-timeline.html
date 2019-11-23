@@ -3,46 +3,48 @@
 {% block content %}
 
   <h2 class="text-center">{{ sessionDoc.procedureDetails.procedure_name | capitalize}} - Summary Timeline </h2>
-  <div class="container  w-75 p-3">
+  <div class="container   p-3">
 
     <div class="row ">
 
       <div class="col-sm-6" >
         {% set header = sessionDoc.columnHeaderText %}
         <h4 class="border text-center">{{ header| first }}</h4>
-        {% for proctask in sessionDoc.procedureDetails.tasks %}
-          <ul class="sortable-list list-group" id="crewa" >
 
-            {% if (proctask.roles.crewA === 'EV1') %}
-              <li id="{{ loop.index }}" class="list-group-item" style="background-color: {{ proctask.color }}; height: 50px">{{proctask.file}} :  {{proctask.roles.crewA}}
-              </li>
-            {% endif %}
-
+        <ul class="sortable-list list-group" id="crew1">
+          {% for procedure in actor1 %}
+            {% for task in taskDoc.tasksDetails %}
+              {% if (procedure.file === task.file) and (procedure.column === task.crew) %}
+                <li id="{{ procedure.position }}" class="list-group-item ui-state-default " style="background-color:{{ procedure.color }}; height:{{task.cellHeight}}px">
+                  {{ task.title | center}}
+                  <span class="badge duration">{{ task.hours }}:{{ task.minutes}}</span>
+                </li>
+              {% endif %}
+            {% endfor %}
           {% endfor %}
         </ul>
+
       </div>
       <div class="col-sm-6">
         {% set header = sessionDoc.columnHeaderText %}
         <h4 class="border text-center">{{ header| last }}</h4>
 
-        {% for proctask in sessionDoc.procedureDetails.tasks %}
-          <ul class="sortable-list list-group" id="crewb">
-
-            {% if (proctask.roles.crewB === 'EV3') %}
-              <li id="{{ loop.index }}" class="list-group-item" style="background-color: {{ proctask.color }}; height: 80px">{{proctask.file}} :  {{proctask.roles.crewB}}
-              </li>
-            {% endif %}
-
+        <ul class="sortable-list list-group" id="crew2">
+          {% for procedure in actor2 %}
+            {% for task in taskDoc.tasksDetails %}
+              {% if (procedure.file === task.file) and (procedure.column === task.crew) %}
+                <li id="{{ procedure.position }}" class="list-group-item ui-state-default" style="background-color:{{ procedure.color }}; height:{{task.cellHeight}}px">
+                  {{ task.title | center}}
+                  <span class="badge duration">{{ task.hours }}:{{ task.minutes}}</span>
+                </li>
+              {% endif %}
+            {% endfor %}
           {% endfor %}
-
         </ul>
+
       </div>
     </div>
   </div>
-  {% for item in sessionDoc.procedureDetails.tasks %}
-  {{ actor1 | dump(2) }}
-
-  {{ actor2 | dump(2) }}
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
