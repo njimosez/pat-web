@@ -16,9 +16,12 @@ const nunjucks = require('nunjucks');
 const uuid = require('uuid/v4');
 const session = require('express-session');
 const app = express();
-const patController = require('./controller/patController');
+const controller = require('./controller/mainController');
+const shell = require('shelljs');
 
 //******************************************************* 
+//remove all residual documents from a previous session
+cleanup();
 
 app.set('view engine', 'njk');
 
@@ -58,7 +61,7 @@ nunjucks.configure('views', {
 });
 
 //Call/fire controllers/routes
-patController(app);
+controller(app);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -79,3 +82,10 @@ app.set('port', process.env.PORT || 3000);
 const server = app.listen(app.get('port'), function () {
   console.log('Express server listening on port ' + server.address().port);
 });
+/** Remove local repository and db files  */
+function cleanup() {
+  const patProjectdir = './public/projects/';
+  shell.rm('-Rf', patProjectdir);
+  shell.rm('-Rf', '*.db');
+}
+

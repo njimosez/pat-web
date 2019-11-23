@@ -24,13 +24,27 @@ const JSONData = function YAMLtoJSON(userSessionDir, giturl, folderName, filenam
   var projectFolderPath = userSessionDir + '/' + path.basename(giturl) + '/' + folderName;
   var yamlFile = projectFolderPath + "/" + filename;
   try {
+    
     const doc = YAML.load(yamlFile);
     return doc;
   } catch (e) {
     console.log(e);
   }
 };
-
+const YAMLData = function JSONtoYAML(jsonStr, userSessionDir, giturl, folderName, filename, next, req) {
+  var projectFolderPath = userSessionDir + '/' + path.basename(giturl) + '/' + folderName;
+  var yamlFile = projectFolderPath + "/" + filename;
+  try {
+    //var obj = JSON.parse(jsonStr);
+    console.log(projectFolderPath);
+  var yamlStr = YAML.stringify(jsonStr,4); //> projectFolderPath/test.yml; 
+  var stream = fs.createWriteStream(projectFolderPath + '/test.yml');
+  stream.write(yamlStr);
+     return yamlStr;
+  } catch (e) {
+    console.log(e);
+  }
+};
 /**
  * @param  {} dir ; procedure or task file directory path
  */
@@ -59,8 +73,22 @@ Object.byString = function (o, s) {
   }
   return o;
 };
+
+
+function getColumnHeaderTextByActor(columns) {
+    var columnHeaderText = [];
+    for (var x in columns){
+        if((columns[x].actors) !="*"){
+            columnHeaderText.push(columns[x].display);
+        }
+       
+    }
+    return(columnHeaderText);
+  }
 /* Export method */
 module.exports = {
   patProjectData: patProjectData,
-  JSONData: JSONData
+  JSONData: JSONData,
+  YAMLData : YAMLData,
+  getColumnHeaderTextByActor : getColumnHeaderTextByActor
 };

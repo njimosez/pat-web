@@ -11,12 +11,11 @@ const path = require('path');
 const fs = require('fs');
 const _ = require('underscore');
 const Datastore = require('nedb');
-const procedureModel = require('../models/procedureModel.js');
-const taskModel = require('../models/taskModel.js');
-const projectdb = new Datastore({ filename: 'pat-project.db', autoload: true });
+const timelineModel = require('./timelineModel.js');
+const projectdb = new Datastore({ filename: 'maestro-project.db', autoload: true });
 
-const createProject = function (userSessionDir, myPATProjectDoc, req, res, next) {
-  projectdb.insert(myPATProjectDoc, function (err, newDoc) {
+const createProject = function (userSessionDir, myMaestroProjectDoc, req, res, next) {
+  projectdb.insert(myMaestroProjectDoc, function (err, newDoc) {
     if (err) {
       shell.rm('-Rf', userSessionDir);
       next(new Error(err));
@@ -28,7 +27,7 @@ const createProject = function (userSessionDir, myPATProjectDoc, req, res, next)
 }; // end module
 
 const getProjectUser = function (req, res, next) {
-  var projectUser = { 'userId': null, 'projectName': null, 'projectURL': null }
+  var projectUser = { 'userId': null, 'projectName': null, 'projectURL': null };
   projectdb.findOne({ userId: req.sessionID }, function (err, doc) {
     if (_.isEmpty(doc)) {
       res.render('index.html');
@@ -72,8 +71,8 @@ const deleteProjectFiles = function (req, res, next) {
     if (err) {
       next(new Error(err));
     } else {
-      procedureModel.deleteProcedureDoc(req, res, next);
-      taskModel.deleteTaskDoc(req, res, next);
+    //  procedureModel.deleteProcedureDoc(req, res, next);
+     // taskModel.deleteTaskDoc(req, res, next);
       shell.rm('-Rf', userSessionDir);
 
       res.render('index.html');

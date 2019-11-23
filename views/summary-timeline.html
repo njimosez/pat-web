@@ -1,10 +1,57 @@
 {% extends "_page_layout.html" %}
 
 {% block content %}
-  <div class="jumbotron text-center">
-    <h2 class="text-center">{{ project | capitalize}} Project Files </h2>
-    <h4>Under Development!</h4>
-  </div>
 
-</div>
+  <h2 class="text-center">{{ sessionDoc.procedureDetails.procedure_name | capitalize}} - Summary Timeline </h2>
+  <div class="container  w-75 p-3">
+
+    <div class="row ">
+
+      <div class="col-sm-6" >
+        {% set header = sessionDoc.columnHeaderText %}
+        <h4 class="border text-center">{{ header| first }}</h4>
+        {% for proctask in sessionDoc.procedureDetails.tasks %}
+          <ul class="sortable-list list-group" id="crewa" >
+
+            {% if (proctask.roles.crewA === 'EV1') %}
+              <li id="{{ loop.index }}" class="list-group-item" style="background-color: {{ proctask.color }}; height: 50px">{{proctask.file}} :  {{proctask.roles.crewA}}
+              </li>
+            {% endif %}
+
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        {% set header = sessionDoc.columnHeaderText %}
+        <h4 class="border text-center">{{ header| last }}</h4>
+
+        {% for proctask in sessionDoc.procedureDetails.tasks %}
+          <ul class="sortable-list list-group" id="crewb">
+
+            {% if (proctask.roles.crewB === 'EV3') %}
+              <li id="{{ loop.index }}" class="list-group-item" style="background-color: {{ proctask.color }}; height: 80px">{{proctask.file}} :  {{proctask.roles.crewB}}
+              </li>
+            {% endif %}
+
+          {% endfor %}
+
+        </ul>
+      </div>
+    </div>
+  </div>
+  {% for item in sessionDoc.procedureDetails.tasks %}
+  {{ actor1 | dump(2) }}
+
+  {{ actor2 | dump(2) }}
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script
+  src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+  integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+  crossorigin="anonymous"></script>
+
+  <script>
+    $('.sortable-list').sortable();
+  </script>
 {% endblock %}
