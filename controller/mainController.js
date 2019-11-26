@@ -20,7 +20,7 @@ const urlarray = [
   'https://gitlab.com/xOPERATIONS/sts-135',
   'https://gitlab.com/njimosez/sts-134',
   'file:///C:/Users/mosez/Documents/UMUC/Capstone/destino/sts-1341'
-]
+];
 
 module.exports = function (app) {
   /* Index page */
@@ -57,6 +57,10 @@ module.exports = function (app) {
   app.get('/summary', function (req, res, next) {
     timelineModel.getProjectTimeline(req, res, next);
   });
+
+  app.post('/summary/ordering', function (req, res, next) {
+      timelineModel.updateTimeline(req,res,next);
+    });
 
   /* Delete project files */
   app.post('/removeProject', function (req, res, next) {

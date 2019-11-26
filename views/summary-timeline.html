@@ -1,59 +1,66 @@
-{% extends "_page_layout.html" %}
+{% extends "_summary_layout.html" %} {% block content %}
 
-{% block content %}
+<h2 class="text-center">{{ sessionDoc.procedureDetails.procedure_name | capitalize}} - Summary Timeline</h2>
+<div class="container   p-3">
+  <div class="row ">
+    <div class="col-sm-6">
+      {% set header = sessionDoc.columnHeaderText %}
+      <h4 class="border text-center">{{ header| first }}</h4>
+      <ul class="sortable-list list-group" id="crew1">
+        {% for procedure in actor1 %} {% for task in taskDoc.tasksDetails %} {% if (procedure.file === task.file) and
+        (procedure.column === task.crew) %}
+        <li
+          id="{{ procedure.position }}"
+          class="list-group-item ui-state-default "
+          style="background-color:{{ procedure.color }}; height:{{task.cellHeight}}px"
+        >
+          {{ task.title | center}}
+          <span class="badge duration">{{ task.hours }}:{{ task.minutes}}</span>
+        </li>
+        {% endif %} {% endfor %} {% endfor %}
+      </ul>
+    </div>
+    <div class="col-sm-6">
+      {% set header = sessionDoc.columnHeaderText %}
+      <h4 class="border text-center">{{ header| last }}</h4>
 
-  <h2 class="text-center">{{ sessionDoc.procedureDetails.procedure_name | capitalize}} - Summary Timeline </h2>
-  <div class="container   p-3">
-
-    <div class="row ">
-
-      <div class="col-sm-6" >
-        {% set header = sessionDoc.columnHeaderText %}
-        <h4 class="border text-center">{{ header| first }}</h4>
-
-        <ul class="sortable-list list-group" id="crew1">
-          {% for procedure in actor1 %}
-            {% for task in taskDoc.tasksDetails %}
-              {% if (procedure.file === task.file) and (procedure.column === task.crew) %}
-                <li id="{{ procedure.position }}" class="list-group-item ui-state-default " style="background-color:{{ procedure.color }}; height:{{task.cellHeight}}px">
-                  {{ task.title | center}}
-                  <span class="badge duration">{{ task.hours }}:{{ task.minutes}}</span>
-                </li>
-              {% endif %}
-            {% endfor %}
-          {% endfor %}
-        </ul>
-
-      </div>
-      <div class="col-sm-6">
-        {% set header = sessionDoc.columnHeaderText %}
-        <h4 class="border text-center">{{ header| last }}</h4>
-
-        <ul class="sortable-list list-group" id="crew2">
-          {% for procedure in actor2 %}
-            {% for task in taskDoc.tasksDetails %}
-              {% if (procedure.file === task.file) and (procedure.column === task.crew) %}
-                <li id="{{ procedure.position }}" class="list-group-item ui-state-default" style="background-color:{{ procedure.color }}; height:{{task.cellHeight}}px">
-                  {{ task.title | center}}
-                  <span class="badge duration">{{ task.hours }}:{{ task.minutes}}</span>
-                </li>
-              {% endif %}
-            {% endfor %}
-          {% endfor %}
-        </ul>
-
-      </div>
+      <ul class="sortable-list list-group" id="crew2">
+        {% for procedure in actor2 %} {% for task in taskDoc.tasksDetails %} {% if (procedure.file === task.file) and
+        (procedure.column === task.crew) %}
+        <li
+          id="{{ procedure.position }}"
+          class="list-group-item ui-state-default"
+          style="background-color:{{ procedure.color }}; height:{{task.cellHeight}}px"
+        >
+          {{ task.title | center}}
+          <span class="badge duration">{{ task.hours }}:{{ task.minutes}}</span>
+        </li>
+        {% endif %} {% endfor %} {% endfor %}
+      </ul>
     </div>
   </div>
+</div>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script
   src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
   integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
-  crossorigin="anonymous"></script>
+  crossorigin="anonymous"
+></script>
 
-  <script>
-    $('.sortable-list').sortable();
-  </script>
+<script>
+  $(".sortable-list").sortable({
+    connectWith: ".sortable-list",
+    update: function(event, ui) {
+      var changedList = this.id;
+      var positions = $(this).sortable("toArray");
+      const ids = {
+        id: changedList,
+        positions: positions
+      };
+      $.post("/summary/ordering", ids, function(res) {});
+    }
+  });
+</script>
 {% endblock %}

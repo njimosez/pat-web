@@ -18,15 +18,15 @@ const proceduredb = new Datastore({
 });
 const taskdb = new Datastore({ filename: "maestro-tasks.db", autoload: true });
 
-const createObjects = function(EvaProcedure, EvaTasks, req, next) {
-  proceduredb.insert(EvaProcedure, function(err, newDoc) {
+const createObjects = function (EvaProcedure, EvaTasks, req, next) {
+  proceduredb.insert(EvaProcedure, function (err, newDoc) {
     if (err) {
       next(new Error(err));
     } else {
       console.log(EvaProcedure + " document created");
     }
   });
-  taskdb.insert(EvaTasks, function(err, newDoc) {
+  taskdb.insert(EvaTasks, function (err, newDoc) {
     if (err) {
       next(new Error(err));
     } else {
@@ -35,14 +35,14 @@ const createObjects = function(EvaProcedure, EvaTasks, req, next) {
   });
 };
 // end module
-const getProjectTimeline = function(req, res, next) {
+const getProjectTimeline = function (req, res, next) {
   var taskdoc = [];
   var actor1procedure = [];
   var actor2procedure = [];
   var keycolumn1;
   var keycolumn2;
   var taskfilename;
-  taskdb.findOne({ userId: req.sessionID }, function(err, doc) {
+  taskdb.findOne({ userId: req.sessionID }, function (err, doc) {
     if (_.isEmpty(doc)) {
       next(new Error(err));
     } else {
@@ -50,7 +50,7 @@ const getProjectTimeline = function(req, res, next) {
     }
   });
 
-  proceduredb.findOne({ userId: req.sessionID }, function(err, doc) {
+  proceduredb.findOne({ userId: req.sessionID }, function (err, doc) {
     if (_.isEmpty(doc)) {
       next(new Error(err));
     } else {
@@ -94,15 +94,69 @@ const getProjectTimeline = function(req, res, next) {
       actor1: actor1procedure,
       actor2: actor2procedure
     });
-    // res.send({actor1procedure, actor2procedure, taskDoc});
   });
 };
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+const updateTimeline = function (req, res, next) {
+  var procedureTasks = [];
+  var reorderedTasks = [];
+  var oldTaskIndex = [];
+  var reorderedTaskIndex = [];
+  var reorderIds = req.body.positions;
+  proceduredb.findOne({ userId: req.sessionID }, function (err, doc) {
+    if (_.isEmpty(doc)) {
+      next(new Error(err));
+    } else {
+      procedureTasks = doc.procedureDetails.tasks;
+      for (var i in reorderIds) {
+        var id = reorderIds[i];
+        for (var p in doc.procedureDetails.tasks) {
+          var EvaTaskIndex = (_.indexOf(procedureTasks, doc.procedureDetails.tasks[p]));
+          var EvaTask = doc.procedureDetails.tasks[p];
+          var index = (_.indexOf(procedureTasks, EvaTask));
+          if (index == id) {
+            reorderedTasks.push(EvaTask);
+            reorderedTaskIndex.push(index);
+          }
+          oldTaskIndex.push(EvaTaskIndex);
+        }
+      }
+      let droppedTaskIndex = _.difference(_.uniq(oldTaskIndex), reorderedTaskIndex);
+      for (var d in droppedTaskIndex) {
+        let dropTaskPosition = droppedTaskIndex[d];
+        reorderedTasks.splice(dropTaskPosition, 0, procedureTasks[dropTaskPosition]);
+      }
+      insert(reorderedTasks, req);
+    }
+  });
+  /**
+   * 
+   * @param {*} reorderedTasks 
+   */
+  function insert(reorderedTasks, req) {
+    console.log(reorderedTasks);
+    proceduredb.update({ userId: req.sessionID }, { $set: { "procedureDetails.tasks": reorderedTasks } }, {}, function (err, numReplaced) {
+      if (err) {
+        next(new Error(err));
+      } else {
+        console.log("procedure updated!");
+      }
+    });
+  }
+};
 
-const deleteProcedureDoc = function(req, res, next) {
-  proceduredb.remove({ userId: req.sessionID }, function(err, doc) {
+
+const deleteProcedureDoc = function (req, res, next) {
+  proceduredb.remove({ userId: req.sessionID }, function (err, doc) {
     if (err) {
       next(new Error(err));
     } else {
+
       console.log("procedure document removed");
     }
   });
@@ -112,5 +166,6 @@ const deleteProcedureDoc = function(req, res, next) {
 module.exports = {
   createObjects: createObjects,
   deleteProcedureDoc: deleteProcedureDoc,
-  getProjectTimeline: getProjectTimeline
+  getProjectTimeline: getProjectTimeline,
+  updateTimeline: updateTimeline
 };
