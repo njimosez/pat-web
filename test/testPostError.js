@@ -16,7 +16,7 @@ describe('POST project', function() {
   //d1.d1. unit test for error checking
   describe('presence of error', function() {
     //require
-    const cloneProjectService = require('../services/patProjectservice');
+    //const cloneProjectService = require('../services/patProjectservice');
     const path = require('path');
     const { check, validationResult } = require('express-validator');
     const patProjectdir = './public/projects/';

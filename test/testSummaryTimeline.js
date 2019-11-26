@@ -7,7 +7,378 @@ const fs = require('fs');
 const _ = require('underscore');
 const dirTree = require('directory-tree');
 YAML = require('yamljs');
-var beau = require('json-beautify')
+var beau = require('json-beautify');
+var sourceTimeline = {
+  "procedureTasks": [
+    {
+      "file": "egress.yml",
+      "roles": {
+        "crewA": "EV1",
+        "crewB": "EV3"
+      }
+    },
+    {
+      "file": "misse7.yml",
+      "roles": {
+        "crewA": "EV1",
+        "crewB": "EV3"
+      },
+      "color": "#FFD700"
+    },
+    {
+      "file": "misse8.yml",
+      "roles": {
+        "crewA": "EV1"
+      },
+      "color": "#FFD700"
+    },
+    {
+      "file": "s3-ceta-light-install.yml",
+      "roles": {
+        "crewA": "EV3"
+      }
+    },
+    {
+      "file": "stbd-sarj-cover-7-install.yml",
+      "roles": {
+        "crewA": "EV3"
+      }
+    },
+    {
+      "file": "p3-p4-nh3-jumper-install.yml",
+      "roles": {
+        "crewA": "EV1",
+        "crewB": "EV3"
+      },
+      "color": "#00FFFF"
+    },
+    {
+      "file": "p5-p6-nh3-jumper-install-n2-vent.yml",
+      "roles": {
+        "crewA": "EV1"
+      },
+      "color": "#00FFFF"
+    },
+    {
+      "file": "p3-p4-nh3-jumper-temp-stow.yml",
+      "roles": {
+        "crewA": "EV3"
+      },
+      "color": "#00FFFF"
+    },
+    {
+      "file": "ewc-antenna-install.yml",
+      "roles": {
+        "crewA": "EV1",
+        "crewB": "EV3"
+      },
+      "color": "#90EE90"
+    },
+    {
+      "file": "vteb-reconfig.yml",
+      "roles": {
+        "crewA": "EV1"
+      },
+      "color": "#00FFFF"
+    },
+    {
+      "file": "ingress.yml",
+      "roles": {
+        "crewA": "EV1",
+        "crewB": "EV3"
+      }
+    }
+  ],
+  "taskDetails": [
+    [
+      {
+        "file": "egress.yml"
+      },
+      {
+        "title": "EGRESS/SETUP"
+      },
+      {
+        "name": "crewA",
+        "description": "Crewmember exiting A/L first, in charge of operating hatch",
+        "duration": {
+          "minutes": 25
+        }
+      },
+      {
+        "name": "crewB",
+        "description": "Crewmember exiting A/L second, in charge of operating UIA",
+        "duration": {
+          "minutes": 25
+        }
+      }
+    ],
+    [
+      {
+        "file": "ewc-antenna-install.yml"
+      },
+      {
+        "title": "EWC Antenna Install"
+      },
+      {
+        "name": "crewA",
+        "description": "Please add description",
+        "duration": {
+          "hours": 2,
+          "minutes": 20
+        }
+      },
+      {
+        "name": "crewB",
+        "duration": {
+          "hours": 2,
+          "minutes": 45
+        }
+      }
+    ],
+    [
+      {
+        "file": "ingress.yml"
+      },
+      {
+        "title": "Cleanup / Ingress"
+      },
+      {
+        "name": "crewA",
+        "description": "Please add description",
+        "duration": {
+          "minutes": 30
+        }
+      },
+      {
+        "name": "crewB",
+        "duration": {
+          "minutes": 30
+        }
+      }
+    ],
+    [
+      {
+        "file": "misse7.yml"
+      },
+      {
+        "title": "MISSE 7 RETRIEVE"
+      },
+      {
+        "name": "crewA",
+        "description": "Please add description",
+        "duration": {
+          "minutes": 60
+        }
+      },
+      {
+        "name": "crewB",
+        "duration": {
+          "minutes": 60
+        }
+      }
+    ],
+    [
+      {
+        "file": "misse8.yml"
+      },
+      {
+        "title": "MISSE 8 Install"
+      },
+      {
+        "name": "crewA",
+        "description": "Please add description",
+        "duration": {
+          "minutes": 40
+        }
+      }
+    ],
+    [
+      {
+        "file": "p3-p4-nh3-jumper-install.yml"
+      },
+      {
+        "title": "P3/P4 NH3 Jumper Install"
+      },
+      {
+        "name": "crewA",
+        "description": "Please add description",
+        "duration": {
+          "minutes": 35
+        }
+      },
+      {
+        "name": "crewB",
+        "duration": {
+          "minutes": 25,
+          "offset": {
+            "minutes": 10
+          }
+        }
+      }
+    ],
+    [
+      {
+        "file": "p3-p4-nh3-jumper-temp-stow.yml"
+      },
+      {
+        "title": "P3/P4 NH3 Jumper Temp Stow"
+      },
+      {
+        "name": "crewA",
+        "description": "Please add description",
+        "duration": {
+          "minutes": 35
+        }
+      }
+    ],
+    [
+      {
+        "file": "p5-p6-nh3-jumper-install-n2-vent.yml"
+      },
+      {
+        "title": "P5/P6 NH3 Jumper Install / N2 Vent"
+      },
+      {
+        "name": "crewA",
+        "description": "Please add description",
+        "duration": {
+          "minutes": 35
+        }
+      }
+    ],
+    [
+      {
+        "file": "s3-ceta-light-install.yml"
+      },
+      {
+        "title": "S3 CETA Light Install"
+      },
+      {
+        "name": "crewA",
+        "description": "Please add description",
+        "duration": {
+          "minutes": 25
+        }
+      }
+    ],
+    [
+      {
+        "file": "stbd-sarj-cover-7-install.yml"
+      },
+      {
+        "title": "Stbd SARJ Cover 7 Install"
+      },
+      {
+        "name": "crewA",
+        "description": "Please add description",
+        "duration": {
+          "minutes": 25
+        }
+      }
+    ],
+    [
+      {
+        "file": "vteb-reconfig.yml"
+      },
+      {
+        "title": "VTEB Cleanup"
+      },
+      {
+        "name": "crewA",
+        "description": "Please add description",
+        "duration": {
+          "minutes": 25
+        }
+      }
+    ]
+  ]
+};
+var controlTimeline = {
+  "EV1":[
+      {"name":"EGRESS/SETUP",
+          "hours":0,
+          "minutes":25,
+          "color":"#000000"
+      },
+      {"name":"MISSE 7 RETRIEVE",
+          "hours":0,
+          "minutes":60,
+          "color":"#FFD700"
+      },
+      {"name":"MISSE 8 Install",
+          "hours":0,
+          "minutes":40,
+          "color":"#FFD700"
+      },
+      {"name":"P3/P4 NH3 Jumper Install",
+          "hours":0,
+          "minutes":35,
+          "color":"#00FFFF"
+      },
+      {"name":"P5/P6 NH3 Jumper Install / N2 Vent",
+          "hours":0,
+          "minutes":35,
+          "color":"#00FFFF"
+      },
+      {"name":"EWC Antenna Install",
+          "hours":2,
+          "minutes":20,
+          "color":"#90EE90"
+      },
+      {"name":"VTEB Cleanup",
+          "hours":0,
+          "minutes":25,
+          "color":"#00FFFF"
+      },
+      {"name":"Cleanup / Ingress",
+          "hours":0,
+          "minutes":30,
+          "color":"#000000"
+      }
+  ],
+  "EV3":[
+      {"name":"EGRESS/SETUP",
+          "hours":0,
+          "minutes":25,
+          "color":"#000000"
+      },
+      {"name":"MISSE 7 RETRIEVE",
+          "hours":0,
+          "minutes":60,
+          "color":"#FFD700"
+      },
+      {"name":"S3 CETA Light Install",
+          "hours":0,
+          "minutes":25,
+          "color":"#000000"
+      },
+      {"name":"Stbd SARJ Cover 7 Install",
+          "hours":0,
+          "minutes":25,
+          "color":"#000000"
+      },
+      {"name":"P3/P4 NH3 Jumper Install",
+          "hours":0,
+          "minutes":25,
+          "color":"#00FFFF"
+      },
+      {"name":"P3/P4 NH3 Jumper Temp Stow",
+          "hours":0,
+          "minutes":35,
+          "color":"#00FFFF"
+      },
+      {"name":"EWC Antenna Install",
+          "hours":2,
+          "minutes":45,
+          "color":"#90EE90"
+      },
+      {"name":"Cleanup / Ingress",
+          "hours":0,
+          "minutes":30,
+          "color":"#000000"
+      }
+  ]
+};
 
 //test to load a yml file
 var JSONData = function YAMLtoJSON(userSessionDir, giturl, folderName, filename) {
@@ -84,7 +455,13 @@ describe('Reading a timeline collection.', function(){
         }
       }
     }
-    return {"EV1": EV1, "EV3": EV3};
+    newTimeline = {"EV1": EV1, "EV3": EV3};
+    var json = JSON.stringify(newTimeline, null, 2);
+    /*fs.writeFile('C:/pat-web/public/testAssets/output.json', json, 'utf8', function(err){
+      if (err) throw err;
+      console.log('complete');
+    });*/
+    return newTimeline;
     }
     
     function loadTask(fileName, doc){
@@ -128,17 +505,12 @@ describe('Reading a timeline collection.', function(){
     };
     return cell;
     }    
-    var sourceTimeline = require('C:/pat-web/public/testAssets/EvaTimelineCollection.json');
-    var controlTimeline = require('C:/pat-web/public/testAssets/output-expected.json');
+    //sourceTimeline = require('C:/pat-web/public/testAssets/EvaTimelineCollection.json');
+    //controlTimeline = require('C:/pat-web/public/testAssets/output-expected.json');
     var check;
   describe('Reading a valid collection', function(){
     var newTimeline = readTimelineCollection(sourceTimeline);
     //console.log(newTimeline);
-    var json = JSON.stringify(newTimeline, null, 2);
-    fs.writeFile('C:/pat-web/public/testAssets/output.json', json, 'utf8', function(err){
-      if (err) throw err;
-      console.log('complete');
-    });
     it('Should match the control value', function(){
       /*
       if(newTimeline == controlTimeline){
@@ -149,4 +521,3 @@ describe('Reading a timeline collection.', function(){
     });
   });
 });
-  
