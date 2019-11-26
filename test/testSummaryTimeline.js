@@ -457,10 +457,10 @@ describe('Reading a timeline collection.', function(){
     }
     newTimeline = {"EV1": EV1, "EV3": EV3};
     var json = JSON.stringify(newTimeline, null, 2);
-    //fs.writeFile('C:/pat-web/public/testAssets/output.json', json, 'utf8', function(err){
+    /*fs.writeFile('C:/pat-web/public/testAssets/output.json', json, 'utf8', function(err){
       if (err) throw err;
       console.log('complete');
-    });
+    });*/
     return newTimeline;
     }
     
@@ -521,4 +521,3 @@ describe('Reading a timeline collection.', function(){
     });
   });
 });
-  
