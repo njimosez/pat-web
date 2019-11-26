@@ -1,4 +1,4 @@
-# pat-web-app (Project is under active development)
+# Maestro-web-app (aka Pat-web)
 
 The purpose of this web app(under development) is to facilitate large structural changes and bootstrapping of task 
 files used in automating the creation of NASA Extravehicular Activities (EVAs, AKA &quot;spacewalks&quot;)
