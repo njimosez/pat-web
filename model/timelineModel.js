@@ -149,23 +149,48 @@ const updateTimeline = function (req, res, next) {
     });
   }
 };
+//console.log(req.query.itemId);
 
-
-const deleteProcedureDoc = function (req, res, next) {
-  proceduredb.remove({ userId: req.sessionID }, function (err, doc) {
-    if (err) {
+const deleteProcedureTask = function (req, res, next) {
+  
+  var procedureTasks = [];
+  var taskId = req.query.itemId;
+  console.log(taskId);
+  proceduredb.findOne({ userId: req.sessionID }, function (err, doc) {
+    if (_.isEmpty(doc)) {
       next(new Error(err));
     } else {
-
-      console.log("procedure document removed");
+      procedureTasks = doc.procedureDetails.tasks;
+    
+      var tasktoRemove =  procedureTasks[taskId];
+      console.log(tasktoRemove);
+      proceduredb.update({ userId: req.sessionID }, { $pull: { "procedureDetails.tasks": tasktoRemove } }, {}, function (err, numReplaced) {
+        if (err) {
+          new Error(err);
+        } else {
+          console.log("procedure updated!");
+        }
+      });
     }
   });
+  
+  function remove () {
+    var tasktoRemove =  procedureTasks[taskId];
+    console.log(tasktoRemove);
+    proceduredb.update({ userId: req.sessionID }, { $pull: { "procedureDetails.tasks": tasktoRemove } }, {}, function (err, numReplaced) {
+      if (err) {
+        next(new Error(err));
+      } else {
+        console.log("procedure updated!");
+      }
+    });
+  }
 };
 
 /* Export methods */
 module.exports = {
   createObjects: createObjects,
-  deleteProcedureDoc: deleteProcedureDoc,
+  deleteProcedureTask: deleteProcedureTask,
   getProjectTimeline: getProjectTimeline,
   updateTimeline: updateTimeline
 };

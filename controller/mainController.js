@@ -67,4 +67,10 @@ module.exports = function (app) {
     projectModel.deleteProjectFiles(req, res, next);
   });
 
+  app.get('/summary/delete', function (req, res, next) {
+   //console.log(req.query.itemId);
+   timelineModel.deleteProcedureTask(req,res.next);
+  });
+
+ // 
 }; // end module.

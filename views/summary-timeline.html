@@ -15,7 +15,7 @@
           style="background-color:{{ procedure.color }}; height:{{task.cellHeight}}px"
         >
           {{ task.title | center}}
-          <span class="badge duration">{{ task.hours }}:{{ task.minutes}}</span><a class="delete" href="#"><i class="fa fa-remove "></i></a></li>
+          <span class="badge duration">{{ task.hours }}:{{ task.minutes}}</span><a class="delete" href="/summary/delete?itemId={{ procedure.position }}"><i class="fa fa-remove "></i></a></li>
         </li>
         {% endif %} {% endfor %} {% endfor %}
       </ul>
@@ -30,10 +30,9 @@
         <li
           id="{{ procedure.position }}"
           class="list-group-item ui-state-default"
-          style="background-color:{{ procedure.color }}; height:{{task.cellHeight}}px"
-        >
+          style="background-color:{{ procedure.color }}; height:{{task.cellHeight}}px">
           {{ task.title | center}}
-          <span class="badge duration">{{ task.hours }}:{{ task.minutes}}</span><a class="delete" href="#"><i class="fa fa-remove "></i></a>
+          <span class="badge duration">{{ task.hours }}:{{ task.minutes}}</span><a class="delete" href="/summary/delete?itemId={{ procedure.position }}"><i class="fa fa-remove "></i></a>
         </li>
         {% endif %} {% endfor %} {% endfor %}
       </ul>
