@@ -15,7 +15,7 @@
           style="background-color:{{ procedure.color }}; height:{{task.cellHeight}}px"
         >
           {{ task.title | center}}
-          <span class="badge duration">{{ task.hours }}:{{ task.minutes}}</span>
+          <span class="badge duration">{{ task.hours }}:{{ task.minutes}}</span><a class="delete" href="#"><i class="fa fa-remove "></i></a></li>
         </li>
         {% endif %} {% endfor %} {% endfor %}
       </ul>
@@ -33,7 +33,7 @@
           style="background-color:{{ procedure.color }}; height:{{task.cellHeight}}px"
         >
           {{ task.title | center}}
-          <span class="badge duration">{{ task.hours }}:{{ task.minutes}}</span>
+          <span class="badge duration">{{ task.hours }}:{{ task.minutes}}</span><a class="delete" href="#"><i class="fa fa-remove "></i></a>
         </li>
         {% endif %} {% endfor %} {% endfor %}
       </ul>
@@ -62,5 +62,11 @@
       $.post("/summary/ordering", ids, function(res) {});
     }
   });
+  $('.delete').click(function(){
+   $(this).closest('li').remove();
+             //or
+   $(this).parent().remove();   
+   location.reload(true);
+});
 </script>
 {% endblock %}
