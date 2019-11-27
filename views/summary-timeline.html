@@ -3,23 +3,23 @@
 <h2 class="text-center">{{ sessionDoc.procedureDetails.procedure_name | capitalize}} - Summary Timeline</h2>
 <div class="container   p-3">
   <div class="row " style="column-count: 4;">
-      <div class="sub-col-t" style="width:10%;">
-        <!--<h4 class="border text-center" style="color:#ffffff;border-color:#ffffff">T</h4>-->
-        <ul id="crew" style="border-right: thick solid #000000;">
+      <div class="sub-col-t">
+        <h4 class="timelineTop"></h4>
+        <ul class="timelineL">
           <li
             id="{{ procedure.position }}"
-            style="border-bottom:1px,solid,#ff0000;;height:40px;">
+            class="timelineBuffer">
           </li>
-          {% for time in ['00:00','00:30','01:00','01:30','02:00','02:30','03:00','03:30','04:00','04:30','05:00','05:30','06:00','06:30'] %} 
+          {% for time in ['00:30','01:00','01:30','02:00','02:30','03:00','03:30','04:00','04:30','05:00','05:30','06:00','06:30'] %} 
           <li
             id="{{ procedure.position }}"
-            style="border-bottom:1px,solid,#ff0000;height:60px;text-align: right;">
+            class="timelineTickL">
             {{time}} -
           </li> 
           {% endfor %}
         </ul>
       </div>
-      <div class="sub-col-li" style="width:38%;margin-left: 1%;margin-right: 1%;">
+      <div class="sub-col-li">
           {% set header = sessionDoc.columnHeaderText %}
         <h4 class="border text-center">{{ header| first }}</h4>
         <ul class=" sortable-list list-group" id="crew">
@@ -36,7 +36,7 @@
           {% endif %} {% endfor %} {% endfor %}
         </ul>
       </div>
-      <div class="sub-col-li" style="width:38%;margin-left: 1%;margin-right: 1%;">
+      <div class="sub-col-li">
           {% set header = sessionDoc.columnHeaderText %}
           <h4 class="border text-center">{{ header| last }}</h4>
           <ul class="sortable-list1 list-group" id="crew">
@@ -52,18 +52,18 @@
             {% endif %} {% endfor %} {% endfor %}
           </ul>
       </div>
-      <div class="sub-col-t" style="width: 10%;">
-        <!--<h4 class="border text-center" style="color:#ffffff;border-color:#ffffff">T</h4>-->
-        <ul id="crew" style="border-left: thick solid #000000;">
+      <div class="sub-col-t">
+        <h4 class="timelineTop" ></h4>
+        <ul class="timelineR">
           <li
             id="{{ procedure.position }}"
-            style="border-bottom:1px,solid,#ff0000;;height:40px;">
+            class="timelineBuffer">
             
           </li>
-          {% for time in ['00:00','00:30','01:00','01:30','02:00','02:30','03:00','03:30','04:00','04:30','05:00','05:30','06:00','06:30'] %} 
+          {% for time in ['00:30','01:00','01:30','02:00','02:30','03:00','03:30','04:00','04:30','05:00','05:30','06:00','06:30'] %} 
           <li
             id="{{ procedure.position }}"
-            style="border-bottom:1px,solid,#ff0000;height:60px;">
+            class="timelineTick">
             - {{time}}
           </li>
           {% endfor %}

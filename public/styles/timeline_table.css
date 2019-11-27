@@ -59,6 +59,40 @@ table {
   text-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
 }
 
+.sub-col-li {
+  width:38%;
+  margin-left: 1%;
+  margin-right: 1%;
+}
+.sub-col-t {
+  width:10%;
+}
+.timelineR {
+  border-left: thin solid #000000;
+  border-top: thin solid #000000;
+  border-bottom: thin solid #000000;
+}
+.timelineL {
+  border-right: thin solid #000000;
+  border-top: thin solid #000000;
+  border-bottom: thin solid #000000;
+}
+.timelineTick {
+  height:60px;font-size: small;
+}
+.timelineTickL {
+  height:60px;font-size: small;text-align: right;
+}
+.timelineBuffer{
+  height:50px;
+}
+.timelineTop {
+  color:#ffffff;
+  border-width:1px;
+  border-style:solid;
+  border-color:#ffffff;
+  height: 42px;
+}
 
 .duration {
   background: lightslategrey;
