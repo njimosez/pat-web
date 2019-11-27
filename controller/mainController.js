@@ -64,6 +64,7 @@ module.exports = function (app) {
 
   /* Delete project files */
   app.post('/removeProject', function (req, res, next) {
+    timelineModel.removeSessionTimeline(req,next);
     projectModel.deleteProjectFiles(req, res, next);
   });
 

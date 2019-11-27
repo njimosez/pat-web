@@ -154,7 +154,7 @@ const updateTimeline = function (req, res, next) {
    * @param {*} reorderedTasks 
    */
   function insert(reorderedTasks, req) {
-      proceduredb.update({
+    proceduredb.update({
       userId: req.sessionID
     }, {
       $set: {
@@ -168,13 +168,14 @@ const updateTimeline = function (req, res, next) {
       }
       res.redirect("/summary");
     });
-    
+
   }
 };
 
 const deleteProcedureTask = function (req, res, next) {
   var procedureTasks = [];
   var taskId = req.query.itemId;
+  var addToInsert = [];
   console.log(taskId);
   proceduredb.findOne({
     userId: req.sessionID
@@ -198,15 +199,19 @@ const deleteProcedureTask = function (req, res, next) {
           console.log(tasktoRemove.file + "task in procedure pulled!");
         }
       });
-      AddtoInsert(tasktoRemove);
+      var obj = _.object(['userId', 'insertTask'], [req.sessionID, tasktoRemove]);
+      addToInsert.push(obj);
+
+      timelineInsertTask(obj);
       res.redirect("/summary");
     }
   });
- 
+
 };
 
-function AddtoInsert(removedTask){
-  insertTaskdb.insert(removedTask, function (err, newDoc) {
+function timelineInsertTask(addToInsert) {
+
+  insertTaskdb.insert(addToInsert, function (err, newDoc) {
     if (err) {
       new Error(err);
     } else {
@@ -215,10 +220,19 @@ function AddtoInsert(removedTask){
   });
 }
 
+const removeSessionTimeline = function (req, next) {
+  let db = [proceduredb, taskdb, insertTaskdb];
+  for (var t in db) {
+    db[t].remove({
+      userId: req.sessionID
+    });
+  }
+};
 /* Export methods */
 module.exports = {
   createObjects: createObjects,
   deleteProcedureTask: deleteProcedureTask,
   getProjectTimeline: getProjectTimeline,
-  updateTimeline: updateTimeline
+  updateTimeline: updateTimeline,
+  removeSessionTimeline: removeSessionTimeline
 };
