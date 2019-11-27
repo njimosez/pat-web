@@ -470,7 +470,7 @@ describe('Reading a timeline collection.', function(){
         var currentTask = doc.taskDetails[u];
         var name = currentTask[0].file;
         if(name == fileName){
-          console.log('Task Loaded: ' + name);
+          //console.log('Task Loaded: ' + name);
           return currentTask;
         }
       }
