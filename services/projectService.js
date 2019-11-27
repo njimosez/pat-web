@@ -1,5 +1,4 @@
 /**
- * PAT WEB USE CASE 2 and 4
  * Service to establish a link with a GitLab repository URL, 
  * clone a PAT project, retrieve, process and map the data into objects
  *  The app uses a document database to manipluate and render the data
@@ -20,12 +19,18 @@ const tasksFolderName = 'tasks';
 const procedureImage = 'images/';
 const patProjectdir = './public/projects/';
 
-/* Clone Project and create an object model */
-const cloneProjectdir = function (req, res, next, giturl) {
+/**
+ * Clone a Maestro project and create object models 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+  */
+const cloneProjectdir = function (req, res, next) {
   var userSessionDir = patProjectdir + req.sessionID;
+  var giturl =req.body.giturl;
   shell.mkdir('-p', patProjectdir, userSessionDir);
   const simpleGit = require('simple-git')(userSessionDir);
-
+ 
   simpleGit.clone(giturl, function (err, data) {
     if (err) {
       shell.rm('-Rf', userSessionDir);
@@ -57,7 +62,8 @@ const cloneProjectdir = function (req, res, next, giturl) {
         'userId': req.sessionID,
         'tasksDetails': []
       };
-
+     
+      // retrieve object from the procedure folder
       var procedureMetaDoc = serviceUtils.patProjectData(userSessionDir, giturl, procedureFolderName, next, req);
 
       for (var x in procedureMetaDoc) {
@@ -98,6 +104,7 @@ const cloneProjectdir = function (req, res, next, giturl) {
         }
 
       }
+      // retrieve object from the image folder
       var imagedoc = serviceUtils.patProjectData(userSessionDir, giturl, procedureImage, next, req);
       for (x in imagedoc) {
         myMaestroProjectDoc.images.push({
@@ -114,24 +121,7 @@ const cloneProjectdir = function (req, res, next, giturl) {
   });
 }; // end module
 
-
-const projectUser = function (req, res, next) {
-  projectModel.getProjectUser(req, res, next);
-};
-
-const projectfiles = function (req, res, next) {
-  projectModel.getProjectfiles(req, res, next);
-};
-
-const removeProject = function (req, res, next) {
-  projectModel.deleteProjectFiles(req, res, next);
-};
-
-
 /* Export method */
 module.exports = {
   cloneProjectdir: cloneProjectdir,
-  projectfiles: projectfiles,
-  projectUser: projectUser,
-  removeProject: removeProject
 };

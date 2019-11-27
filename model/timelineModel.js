@@ -24,7 +24,12 @@ const insertTaskdb = new Datastore({
   filename: "maestro-inserttasks.db",
   autoload: true
 });
-
+/**
+ * Create an EVA procedure and associated task files documents
+ * 
+ * @param {*} EvaProcedure "Object derived from parsing a project procedure folder .yml file "
+ * @param {*} EvaTasks "Object derived from parsing the project task folder .yml files"
+ */
 const createObjects = function (EvaProcedure, EvaTasks, req, next) {
   proceduredb.insert(EvaProcedure, function (err, newDoc) {
     if (err) {
@@ -42,6 +47,17 @@ const createObjects = function (EvaProcedure, EvaTasks, req, next) {
   });
 };
 // end module
+
+/**
+ * Get data for the project timeline
+ * This function will manipulate the procedure
+ * document to create objects for the two columns in
+ * the timelime and also return the task collection
+ * which is processed at the front end 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 const getProjectTimeline = function (req, res, next) {
   var taskdoc = [];
   var actor1procedure = [];
@@ -49,6 +65,9 @@ const getProjectTimeline = function (req, res, next) {
   var keycolumn1;
   var keycolumn2;
   var taskfilename;
+
+  //TODO Process the task collection at the back end and render 
+  // only columns objects containing task title and hours 
   taskdb.findOne({
     userId: req.sessionID
   }, function (err, doc) {
@@ -108,12 +127,13 @@ const getProjectTimeline = function (req, res, next) {
   });
 };
 /**
- * 
+ * Update the procedure document when after 
+ * items have been reordered
  * @param {*} req 
  * @param {*} res 
  * @param {*} next 
  */
-const updateTimeline = function (req, res, next) {
+const reorderTimeline = function (req, res, next) {
   var procedureTasks = [];
   var reorderedTasks = [];
   var oldTaskIndex = [];
@@ -144,16 +164,17 @@ const updateTimeline = function (req, res, next) {
         let dropTaskPosition = droppedTaskIndex[d];
         reorderedTasks.splice(dropTaskPosition, 0, procedureTasks[dropTaskPosition]);
       }
-      insert(reorderedTasks, req);
+      insertDroppedTasks(reorderedTasks, req);
     }
   });
 
 
   /**
-   * 
-   * @param {*} reorderedTasks 
+   * Insert dropped tasks still needed
+   * in the summary timeline
+   * @param {*} reorderedTasks " The dropped task object "
    */
-  function insert(reorderedTasks, req) {
+  function insertDroppedTasks(reorderedTasks, req) {
     proceduredb.update({
       userId: req.sessionID
     }, {
@@ -171,7 +192,13 @@ const updateTimeline = function (req, res, next) {
 
   }
 };
-
+/**
+ * Delete a document task when removed from the timeline
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 const deleteProcedureTask = function (req, res, next) {
   var procedureTasks = [];
   var taskId = req.query.itemId;
@@ -208,9 +235,16 @@ const deleteProcedureTask = function (req, res, next) {
   });
 
 };
-
+/**
+ * Create a document containing removed tasks
+ * objcts in this document can be brought back 
+ * into  procedure using the timeline insert feature 
+ * @param {*} addToInsert "Task object to insert"
+ */
 function timelineInsertTask(addToInsert) {
-
+ // This document can be expanded to include all tasks object 
+ // not in the procedure task list but that can be included 
+ // later from the timeline using the insert feature
   insertTaskdb.insert(addToInsert, function (err, newDoc) {
     if (err) {
       new Error(err);
@@ -219,7 +253,11 @@ function timelineInsertTask(addToInsert) {
     }
   });
 }
-
+/**
+ * Delete a specific session procedure and tasks documents 
+ * @param {*} req 
+ * @param {*} next 
+ */
 const removeSessionTimeline = function (req, next) {
   let db = [proceduredb, taskdb, insertTaskdb];
   for (var t in db) {
@@ -233,6 +271,6 @@ module.exports = {
   createObjects: createObjects,
   deleteProcedureTask: deleteProcedureTask,
   getProjectTimeline: getProjectTimeline,
-  updateTimeline: updateTimeline,
+  reorderTimeline: reorderTimeline,
   removeSessionTimeline: removeSessionTimeline
 };

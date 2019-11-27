@@ -44,7 +44,7 @@ module.exports = function (app) {
       if (!errors.isEmpty()) {
         next(new Error('Invalid URL: Not a Recognized Maestro project repository'));
       } else {
-        projectService.cloneProjectdir(req, res, next, req.body.giturl);
+        projectService.cloneProjectdir(req, res, next);
       }
     });
 
@@ -59,7 +59,7 @@ module.exports = function (app) {
   });
 
   app.post('/summary/ordering', function (req, res, next) {
-    timelineModel.updateTimeline(req, res, next);
+    timelineModel. reorderTimeline(req, res, next);
   });
 
   /* Delete project files */

@@ -10,6 +10,15 @@ const dirTree = require('directory-tree');
 const _ = require('underscore');
 YAML = require('yamljs');
 
+/**
+ * Gets a project data from a specified dir path 
+ * 
+ * @param {*} userSessionDir "dir created per user session in local projects repo"
+ * @param {*} giturl "URL of the retrieved project"
+ * @param {*} folderName "name of the folder where to retrieve the data"
+ * @param {*} next 
+ * @param {*} req 
+ */
 const patProjectData = function getProjectFolderData(userSessionDir, giturl, folderName, next, req) {
   var projectFolderPath = getTree(userSessionDir + '/' + path.basename(giturl) + '/' + folderName);
   if (_.isEmpty(projectFolderPath)) {
@@ -19,7 +28,16 @@ const patProjectData = function getProjectFolderData(userSessionDir, giturl, fol
   return projectFolderMeta = Object.byString(projectFolderPath, 'children');
 
 };
-
+/**
+ * Parses a YAML file and transform the data to JSON
+ * 
+ * @param {*} userSessionDir "dir created per user session in local projects repo"
+ * @param {*} giturl  "URL of the retrieved project"
+ * @param {*} folderName "name of the folder where to retrieve the data"
+ * @param {*} filename "name of the file to process"
+ * @param {*} next 
+ * @param {*} req 
+ */
 const JSONData = function YAMLtoJSON(userSessionDir, giturl, folderName, filename, next, req) {
   var projectFolderPath = userSessionDir + '/' + path.basename(giturl) + '/' + folderName;
   var yamlFile = projectFolderPath + "/" + filename;
@@ -31,6 +49,17 @@ const JSONData = function YAMLtoJSON(userSessionDir, giturl, folderName, filenam
     console.log(e);
   }
 };
+/**
+ * Parses a JSON object and transform the data to .yml file
+ * 
+ * @param {*} jsonStr " JSON Object to parse"
+ * @param {*} userSessionDir "dir created per user session in local projects repo"
+ * @param {*} giturl "URL of the retrieved project"
+ * @param {*} folderName "name of the folder where to store the data"
+ * @param {*} filename "name of the file to save"
+ * @param {*} next 
+ * @param {*} req 
+ */
 const YAMLData = function JSONtoYAML(jsonStr, userSessionDir, giturl, folderName, filename, next, req) {
   var projectFolderPath = userSessionDir + '/' + path.basename(giturl) + '/' + folderName;
   var yamlFile = projectFolderPath + "/" + filename;
@@ -46,7 +75,9 @@ const YAMLData = function JSONtoYAML(jsonStr, userSessionDir, giturl, folderName
   }
 };
 /**
- * @param  {} dir ; procedure or task file directory path
+ *  Walks a directory and returns a metadata of the content 
+ * 
+ * @param {*} dir procedure or task file directory path
  */
 function getTree(dir) {
   // get only yaml files
@@ -58,6 +89,8 @@ function getTree(dir) {
 }
 
 /**
+ * Converts an object to String 
+ * 
  * @param  {} o
  * @param  {} s
  */
@@ -76,7 +109,13 @@ Object.byString = function (o, s) {
   return o;
 };
 
-
+/**
+ * Creates the summary timeline header display
+ * object
+ * 
+ * @param {*} columns : Eva Procedure columns
+ * 
+ */
 function getColumnHeaderTextByActor(columns) {
   var columnHeaderText = [];
   for (var x in columns) {
@@ -87,7 +126,13 @@ function getColumnHeaderTextByActor(columns) {
   }
   return (columnHeaderText);
 }
-
+/**
+ * Converts EVA task hours and minutes into 
+ * the timeline display  
+ * 
+ * @param {*} taskHours 
+ * @param {*} taskMin 
+ */
 function timeConvert(taskHours, taskMin) {
   let hours;
   let mins;
