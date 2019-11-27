@@ -71,8 +71,7 @@ const deleteProjectFiles = function (req, res, next) {
     if (err) {
       next(new Error(err));
     } else {
-    //  procedureModel.deleteProcedureDoc(req, res, next);
-     // taskModel.deleteTaskDoc(req, res, next);
+    
       shell.rm('-Rf', userSessionDir);
 
       res.render('index.html');

@@ -16,21 +16,28 @@ const proceduredb = new Datastore({
   filename: "maestro-procedure.db",
   autoload: true
 });
-const taskdb = new Datastore({ filename: "maestro-tasks.db", autoload: true });
+const taskdb = new Datastore({
+  filename: "maestro-tasks.db",
+  autoload: true
+});
+const insertTaskdb = new Datastore({
+  filename: "maestro-inserttasks.db",
+  autoload: true
+});
 
 const createObjects = function (EvaProcedure, EvaTasks, req, next) {
   proceduredb.insert(EvaProcedure, function (err, newDoc) {
     if (err) {
       next(new Error(err));
     } else {
-      console.log(EvaProcedure + " document created");
+      console.log("EvaProcedure document created");
     }
   });
   taskdb.insert(EvaTasks, function (err, newDoc) {
     if (err) {
       next(new Error(err));
     } else {
-      console.log(EvaTasks + " document created");
+      console.log("EvaTasks document created");
     }
   });
 };
@@ -42,7 +49,9 @@ const getProjectTimeline = function (req, res, next) {
   var keycolumn1;
   var keycolumn2;
   var taskfilename;
-  taskdb.findOne({ userId: req.sessionID }, function (err, doc) {
+  taskdb.findOne({
+    userId: req.sessionID
+  }, function (err, doc) {
     if (_.isEmpty(doc)) {
       next(new Error(err));
     } else {
@@ -50,7 +59,9 @@ const getProjectTimeline = function (req, res, next) {
     }
   });
 
-  proceduredb.findOne({ userId: req.sessionID }, function (err, doc) {
+  proceduredb.findOne({
+    userId: req.sessionID
+  }, function (err, doc) {
     if (_.isEmpty(doc)) {
       next(new Error(err));
     } else {
@@ -108,7 +119,9 @@ const updateTimeline = function (req, res, next) {
   var oldTaskIndex = [];
   var reorderedTaskIndex = [];
   var reorderIds = req.body.positions;
-  proceduredb.findOne({ userId: req.sessionID }, function (err, doc) {
+  proceduredb.findOne({
+    userId: req.sessionID
+  }, function (err, doc) {
     if (_.isEmpty(doc)) {
       next(new Error(err));
     } else {
@@ -134,58 +147,73 @@ const updateTimeline = function (req, res, next) {
       insert(reorderedTasks, req);
     }
   });
+
+
   /**
    * 
    * @param {*} reorderedTasks 
    */
   function insert(reorderedTasks, req) {
-    console.log(reorderedTasks);
-    proceduredb.update({ userId: req.sessionID }, { $set: { "procedureDetails.tasks": reorderedTasks } }, {}, function (err, numReplaced) {
+      proceduredb.update({
+      userId: req.sessionID
+    }, {
+      $set: {
+        "procedureDetails.tasks": reorderedTasks
+      }
+    }, {}, function (err, numReplaced) {
       if (err) {
         next(new Error(err));
       } else {
         console.log("procedure updated!");
       }
+      res.redirect("/summary");
     });
+    
   }
 };
-//console.log(req.query.itemId);
 
 const deleteProcedureTask = function (req, res, next) {
-  
   var procedureTasks = [];
   var taskId = req.query.itemId;
   console.log(taskId);
-  proceduredb.findOne({ userId: req.sessionID }, function (err, doc) {
+  proceduredb.findOne({
+    userId: req.sessionID
+  }, function (err, doc) {
     if (_.isEmpty(doc)) {
       next(new Error(err));
     } else {
       procedureTasks = doc.procedureDetails.tasks;
-    
-      var tasktoRemove =  procedureTasks[taskId];
+      var tasktoRemove = procedureTasks[taskId];
       console.log(tasktoRemove);
-      proceduredb.update({ userId: req.sessionID }, { $pull: { "procedureDetails.tasks": tasktoRemove } }, {}, function (err, numReplaced) {
+      proceduredb.update({
+        userId: req.sessionID
+      }, {
+        $pull: {
+          "procedureDetails.tasks": tasktoRemove
+        }
+      }, {}, function (err, numReplaced) {
         if (err) {
-          new Error(err);
+          next(new Error(err));
         } else {
-          console.log("procedure updated!");
+          console.log(tasktoRemove.file + "task in procedure pulled!");
         }
       });
+      AddtoInsert(tasktoRemove);
+      res.redirect("/summary");
     }
   });
-  
-  function remove () {
-    var tasktoRemove =  procedureTasks[taskId];
-    console.log(tasktoRemove);
-    proceduredb.update({ userId: req.sessionID }, { $pull: { "procedureDetails.tasks": tasktoRemove } }, {}, function (err, numReplaced) {
-      if (err) {
-        next(new Error(err));
-      } else {
-        console.log("procedure updated!");
-      }
-    });
-  }
+ 
 };
+
+function AddtoInsert(removedTask){
+  insertTaskdb.insert(removedTask, function (err, newDoc) {
+    if (err) {
+      new Error(err);
+    } else {
+      console.log(" New insert Task document created");
+    }
+  });
+}
 
 /* Export methods */
 module.exports = {

@@ -59,8 +59,8 @@ module.exports = function (app) {
   });
 
   app.post('/summary/ordering', function (req, res, next) {
-      timelineModel.updateTimeline(req,res,next);
-    });
+    timelineModel.updateTimeline(req, res, next);
+  });
 
   /* Delete project files */
   app.post('/removeProject', function (req, res, next) {
@@ -68,9 +68,9 @@ module.exports = function (app) {
   });
 
   app.get('/summary/delete', function (req, res, next) {
-   //console.log(req.query.itemId);
-   timelineModel.deleteProcedureTask(req,res.next);
+    //console.log(req.query.itemId);
+    timelineModel.deleteProcedureTask(req, res, next);
   });
 
- // 
+  // 
 }; // end module.

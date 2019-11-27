@@ -52,11 +52,11 @@ const cloneProjectdir = function (req, res, next, giturl) {
         'userId': req.sessionID,
         'columnHeaderText': [],
         'procedureDetails': []
-      }; // get rolr
+      };
       var EvaTasks = {
         'userId': req.sessionID,
         'tasksDetails': []
-      }; // duration is static
+      };
 
       var procedureMetaDoc = serviceUtils.patProjectData(userSessionDir, giturl, procedureFolderName, next, req);
 
@@ -73,7 +73,6 @@ const cloneProjectdir = function (req, res, next, giturl) {
         EvaProcedure.columnHeaderText = serviceUtils.getColumnHeaderTextByActor(procedureDoc.columns);
         EvaProcedure.procedureDetails = procedureDoc;
       }
-
 
       // retrieve object from the task folder
       var tasksMetaDoc = serviceUtils.patProjectData(userSessionDir, giturl, tasksFolderName, next, req);
@@ -108,7 +107,7 @@ const cloneProjectdir = function (req, res, next, giturl) {
       }
 
       timelineModel.createObjects(EvaProcedure, EvaTasks, req, next);
-
+      
       projectModel.createProject(userSessionDir, myMaestroProjectDoc, req, res, next);
     }
 
