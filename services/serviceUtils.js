@@ -134,6 +134,7 @@ function getColumnHeaderTextByActor(columns) {
  * @param {*} taskMin 
  */
 function timeConvert(taskHours, taskMin) {
+
   let hours;
   let mins;
   let cellHeight;
@@ -141,7 +142,12 @@ function timeConvert(taskHours, taskMin) {
     hours = taskMin / 60;
     mins = "00";
     cellHeight = taskMin * 2;
+  } else if ( (_.isNumber(taskHours)) && (_.isNumber(taskMin) )) {
+    hours = "0" + taskHours;
+    mins = taskMin;
+    cellHeight = (taskMin + (taskHours * 60)) * 2;
   } else if (_.isEmpty(taskHours)) {
+    console.log(taskHours);
     hours = "00";
     mins = taskMin;
     cellHeight = taskMin * 2;
@@ -152,7 +158,7 @@ function timeConvert(taskHours, taskMin) {
   } else {
     hours = "0" + taskHours;
     mins = taskMin;
-    cellHeight = taskMin + (taskHours * 60) * 2;
+    cellHeight = (taskMin + (taskHours * 60)) * 2;
   }
   return ({
     hours: hours,
