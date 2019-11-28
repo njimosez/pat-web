@@ -20,10 +20,17 @@ const taskdb = new Datastore({
   filename: "maestro-tasks.db",
   autoload: true
 });
-const insertTaskdb = new Datastore({
+const insert_taskdb = new Datastore({
   filename: "maestro-inserttasks.db",
   autoload: true
 });
+
+/**
+ * Boolean (global variable) to trigger the display of
+ * the commit changes button on the timeline
+ */
+var isSaveButton = false;
+
 /**
  * Create an EVA procedure and associated task files documents
  * 
@@ -34,15 +41,11 @@ const createObjects = function (EvaProcedure, EvaTasks, req, next) {
   proceduredb.insert(EvaProcedure, function (err, newDoc) {
     if (err) {
       next(new Error(err));
-    } else {
-      console.log("EvaProcedure document created");
     }
   });
   taskdb.insert(EvaTasks, function (err, newDoc) {
     if (err) {
       next(new Error(err));
-    } else {
-      console.log("EvaTasks document created");
     }
   });
 };
@@ -60,14 +63,27 @@ const createObjects = function (EvaProcedure, EvaTasks, req, next) {
  */
 const getProjectTimeline = function (req, res, next) {
   var taskdoc = [];
+  var insertdoc = [];
   var actor1procedure = [];
   var actor2procedure = [];
   var keycolumn1;
   var keycolumn2;
   var taskfilename;
+  var timeline1 = [];
+  var timeline2 = [];
+  var tasks = [];
 
-  //TODO Process the task collection at the back end and render 
-  // only columns objects containing task title and hours 
+  var taskToInsert = [];
+  insert_taskdb.find({
+    userId: req.sessionID
+  }, function (err, doc) {
+    if (_.isEmpty(doc)) {
+      console.log("insert doc is empty");
+    } else {
+      insertdoc = doc;
+    }
+  });
+
   taskdb.findOne({
     userId: req.sessionID
   }, function (err, doc) {
@@ -84,10 +100,12 @@ const getProjectTimeline = function (req, res, next) {
     if (_.isEmpty(doc)) {
       next(new Error(err));
     } else {
+
       let actor1 = doc.procedureDetails.columns[1].actors;
       let actor2 = doc.procedureDetails.columns[2].actors;
       for (var p in doc.procedureDetails.tasks) {
         taskfilename = doc.procedureDetails.tasks[p].file;
+        // get the keys for each actor array 
         var actorKeys = _.keys(doc.procedureDetails.tasks[p].roles);
         if (
           _.size(actorKeys) < 2 &&
@@ -115,20 +133,51 @@ const getProjectTimeline = function (req, res, next) {
         );
         actor1procedure.push(obj1);
         actor2procedure.push(obj2);
+        tasks = taskdoc.tasksDetails;
       }
-    }
+      // create actor1 timeline
+      for (var a in actor1procedure) {
+        for (var t in tasks) {
+          if ((actor1procedure[a].file === tasks[t].file) &&
+            (actor1procedure[a].column === tasks[t].crew)) {
+            var object1 = _.object(['file', 'position', 'color', 'title', 'hours', 'minutes', 'cellHeight'], 
+            [actor1procedure[a].file, actor1procedure[a].position,
+              actor1procedure[a].color, tasks[t].title, tasks[t].title.hours, tasks[t].minutes, tasks[t].cellHeight
+            ]);
+            timeline1.push(object1);
+          }
+        }
+      }
+      // create actor2 timeline
+      for (var b in actor2procedure) {
+        for (var s in tasks) {
+          if ((actor2procedure[b].file === tasks[s].file) &&
+            (actor2procedure[b].column === tasks[s].crew)) {
+            var object2 = _.object(['file', 'position', 'color', 'title', 'hours', 'minutes', 'cellHeight'], 
+            [actor2procedure[b].file, actor2procedure[b].position,
+              actor2procedure[b].color, tasks[s].title, tasks[s].title.hours, tasks[s].minutes, tasks[s].cellHeight
+            ]);
+            timeline2.push(object2);
+          }
+        }
+      }
 
+      }
+    console.log(" Trigger: " + isSaveButton);
     res.render("summary-timeline.html", {
       sessionDoc: doc,
-      taskDoc: taskdoc,
+      isSaveButton: isSaveButton,
       actor1: actor1procedure,
-      actor2: actor2procedure
+      actor2: actor2procedure,
+      actor1timeline: timeline1,
+      actor2timeline: timeline2,
+      insertdoc: insertdoc
+
     });
   });
 };
 /**
- * Update the procedure document when after 
- * items have been reordered
+ * Update procedure document when items are reordered
  * @param {*} req 
  * @param {*} res 
  * @param {*} next 
@@ -187,13 +236,15 @@ const reorderTimeline = function (req, res, next) {
       } else {
         console.log("procedure updated!");
       }
+      //trigger the save modal display
+      isSaveButton = true;
       res.redirect("/summary");
     });
 
   }
 };
 /**
- * Delete a document task when removed from the timeline
+ * Delete a task from a procedure if removed from the timeline
  * 
  * @param {*} req 
  * @param {*} res 
@@ -202,8 +253,9 @@ const reorderTimeline = function (req, res, next) {
 const deleteProcedureTask = function (req, res, next) {
   var procedureTasks = [];
   var taskId = req.query.itemId;
-  var addToInsert = [];
-  console.log(taskId);
+  //trigger the save modal display
+  isSaveButton = true;
+  //find and remove the task from the procedure object
   proceduredb.findOne({
     userId: req.sessionID
   }, function (err, doc) {
@@ -212,7 +264,6 @@ const deleteProcedureTask = function (req, res, next) {
     } else {
       procedureTasks = doc.procedureDetails.tasks;
       var tasktoRemove = procedureTasks[taskId];
-      console.log(tasktoRemove);
       proceduredb.update({
         userId: req.sessionID
       }, {
@@ -222,49 +273,85 @@ const deleteProcedureTask = function (req, res, next) {
       }, {}, function (err, numReplaced) {
         if (err) {
           next(new Error(err));
-        } else {
-          console.log(tasktoRemove.file + "task in procedure pulled!");
         }
       });
-      var obj = _.object(['userId', 'insertTask'], [req.sessionID, tasktoRemove]);
-      addToInsert.push(obj);
+      // add the remove task to the insert object
+      var obj = _.object(['userId', 'task'], [req.sessionID, tasktoRemove]);
+      insert_taskdb.insert(obj);
 
-      timelineInsertTask(obj);
       res.redirect("/summary");
     }
   });
-
 };
+
+
 /**
- * Create a document containing removed tasks
- * objcts in this document can be brought back 
- * into  procedure using the timeline insert feature 
- * @param {*} addToInsert "Task object to insert"
+ * Insert a task to the procedure timeline
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
  */
-function timelineInsertTask(addToInsert) {
- // This document can be expanded to include all tasks object 
- // not in the procedure task list but that can be included 
- // later from the timeline using the insert feature
-  insertTaskdb.insert(addToInsert, function (err, newDoc) {
-    if (err) {
-      new Error(err);
+const insertProcedureTask = function (req, res, next) {
+  var procedureTasks = [];
+  var tasktoAdd;
+  var filename = req.query.file;
+  var addToInsert = [];
+  insert_taskdb.findOne({
+    $and: [{
+      userId: req.sessionID
+    }, {
+      'task.file': filename
+    }]
+  }, function (err, doc) {
+    if (_.isEmpty(doc)) {
+      next(new Error(err));
     } else {
-      console.log(" New insert Task document created");
+
+      tasktoAdd = doc.task;
+      // add the task upon insert to the procedure object     
+      proceduredb.update({
+        userId: req.sessionID
+      }, {
+        $push: {
+          "procedureDetails.tasks": tasktoAdd
+        }
+      }, {}, function (err, numReplaced) {
+        if (err) {
+          next(new Error(err));
+        }
+      });
+      // then remove the inserted task from the insert object
+      insert_taskdb.remove({
+        $and: [{
+          userId: req.sessionID
+        }, {
+          'task': tasktoAdd
+        }]
+      });
+
+      //trigger the save modal display
+      isSaveButton = true;
+      res.redirect("/summary");
+
     }
   });
-}
+};
+
+
 /**
  * Delete a specific session procedure and tasks documents 
  * @param {*} req 
  * @param {*} next 
  */
 const removeSessionTimeline = function (req, next) {
-  let db = [proceduredb, taskdb, insertTaskdb];
+  let db = [proceduredb, taskdb, insert_taskdb];
   for (var t in db) {
     db[t].remove({
       userId: req.sessionID
     });
   }
+  //turn off the save modal display
+  isSaveButton = false;
 };
 /* Export methods */
 module.exports = {
@@ -272,5 +359,6 @@ module.exports = {
   deleteProcedureTask: deleteProcedureTask,
   getProjectTimeline: getProjectTimeline,
   reorderTimeline: reorderTimeline,
-  removeSessionTimeline: removeSessionTimeline
+  removeSessionTimeline: removeSessionTimeline,
+  insertProcedureTask: insertProcedureTask
 };

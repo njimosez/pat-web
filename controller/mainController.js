@@ -7,6 +7,7 @@
 const projectService = require('../services/projectService.js');
 const timelineModel = require('../model/timelineModel.js');
 const projectModel = require('../model/projectModel.js');
+const _ = require("underscore");
 const path = require('path');
 const {
   check,
@@ -14,7 +15,6 @@ const {
   matchedData,
   body
 } = require('express-validator');
-const _ = require('underscore');
 const urlarray = [
   'https://gitlab.com/xOPERATIONS/sts-134',
   'https://gitlab.com/xOPERATIONS/sts-135',
@@ -69,9 +69,10 @@ module.exports = function (app) {
   });
 
   app.get('/summary/delete', function (req, res, next) {
-    //console.log(req.query.itemId);
-    timelineModel.deleteProcedureTask(req, res, next);
+      timelineModel.deleteProcedureTask(req, res, next);
   });
-
-  // 
+  app.get('/summary/insert', function (req, res, next) {
+       timelineModel.insertProcedureTask(req, res, next);
+  });
+  
 }; // end module.

@@ -147,7 +147,6 @@ function timeConvert(taskHours, taskMin) {
     mins = taskMin;
     cellHeight = (taskMin + (taskHours * 60)) * 2;
   } else if (_.isEmpty(taskHours)) {
-    console.log(taskHours);
     hours = "00";
     mins = taskMin;
     cellHeight = taskMin * 2;

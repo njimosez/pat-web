@@ -1,7 +1,40 @@
 {% extends "_summary_layout.html" %} {% block content %}
 
 <h2 class="text-center">{{ sessionDoc.procedureDetails.procedure_name | capitalize}} - Summary Timeline</h2>
+
 <div class="container   p-3">
+<p class="text-center"> Use the "<i class="fa fa-bars"></i>" button to reorder a task , and “<i class="fa fa-remove "></i>” to remove a task </p>
+
+   <div class="row offset-md-3">
+    <div class="col-md-6 ">
+    {% if insertdoc != 0 %}
+    <div class="dropdown">
+  <button class="btn  btn-outline-secondary btn-lg dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Insert Tasks
+  </button>
+  <p > Inserted task are placed at the bottom of the timeline and should be dragged and dropped to the appropriate location </p>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+  {% for item in insertdoc %}
+    <a class="dropdown-item" href="/summary/insert?file={{ item.task.file }}">{{ item.task.file| replace
+                  (".yml","")}}|{{ item.task.roles.crewA}}|{{ item.task.roles.crewB}}</a>
+    {% else %}
+  <p>No task to insert !</p>
+{% endfor %}
+  </div>
+   </div>
+  {% endif %}
+    </div>
+    <div class="col-md-6 ">
+  {% if  isSaveButton %}
+   <button type="button" class="btn btn-outline-success btn-lg" data-toggle="modal" data-target="#commitModalCenter">
+        <i class="fa fa-save fa-fw"></i>Commit Changes
+      </button>
+      <p > Save your Eva Procedure changes back to the GitLab repository</p>
+      {%include "partials/commit-project-form.html" %}
+    {% endif %}
+</div>
+ </div>
+
   <div class="row " style="column-count: 4;">
       <div class="sub-col-t">
         <h4 class="timelineTop"></h4>
@@ -10,12 +43,12 @@
             id="{{ procedure.position }}"
             class="timelineBuffer">
           </li>
-          {% for time in ['00:30','01:00','01:30','02:00','02:30','03:00','03:30','04:00','04:30','05:00','05:30','06:00','06:30'] %} 
+          {% for time in ['00:30','01:00','01:30','02:00','02:30','03:00','03:30','04:00','04:30','05:00','05:30','06:00','06:30'] %}
           <li
             id="{{ procedure.position }}"
             class="timelineTickL">
             {{time}} -
-          </li> 
+          </li>
           {% endfor %}
         </ul>
       </div>
@@ -23,33 +56,31 @@
           {% set header = sessionDoc.columnHeaderText %}
         <h4 class="border text-center">{{ header| first }}</h4>
         <ul class=" sortable-list list-group" id="crew">
-          {% for procedure in actor1 %} {% for task in taskDoc.tasksDetails %} {% if (procedure.file === task.file) and
-          (procedure.column === task.crew) %}
+          {% for procedure in actor1timeline %}
           <li
             id="{{ procedure.position }}"
             class="list-group-item ui-state-default "
-            style="background-color:{{ procedure.color }}; height:{{task.cellHeight}}px"
+            style="background-color:{{ procedure.color }}; height:{{procedure.cellHeight}}px"
           >
-            {{ task.title | center}}
-            <span class="badge duration">{{ task.hours }}:{{ task.minutes}}</span><a class="delete" href="/summary/delete?itemId={{ procedure.position }}"><i class="fa fa-remove "></i></a></li>
+            {{ procedure.title | center}}
+            <span class="badge duration">{{ procedure.hours }}:{{ procedure.minutes}}</span><a class="delete" href="/summary/delete?itemId={{ procedure.position }}"><i class="fa fa-remove "></i></a></li>
           </li>
-          {% endif %} {% endfor %} {% endfor %}
+         {% endfor %}
         </ul>
       </div>
       <div class="sub-col-li">
           {% set header = sessionDoc.columnHeaderText %}
           <h4 class="border text-center">{{ header| last }}</h4>
           <ul class="sortable-list1 list-group" id="crew">
-            {% for procedure in actor2 %} {% for task in taskDoc.tasksDetails %} {% if (procedure.file === task.file) and
-            (procedure.column === task.crew) %}
+            {% for procedure in actor2timeline %}
             <li
               id="{{ procedure.position }}"
               class="list-group-item ui-state-default"
-              style="background-color:{{ procedure.color }}; height:{{task.cellHeight}}px">
-              {{ task.title | center}}
-              <span class="badge duration">{{ task.hours }}:{{ task.minutes}}</span><a class="delete" href="/summary/delete?itemId={{ procedure.position }}"><i class="fa fa-remove "></i></a>
+              style="background-color:{{ procedure.color }}; height:{{procedure.cellHeight}}px">
+              {{ procedure.title | center}}
+              <span class="badge duration">{{ procedure.hours }}:{{ procedure.minutes}}</span><a class="delete" href="/summary/delete?itemId={{ procedure.position }}"><i class="fa fa-remove "></i></a>
             </li>
-            {% endif %} {% endfor %} {% endfor %}
+            {% endfor %}
           </ul>
       </div>
       <div class="sub-col-t">
@@ -58,9 +89,9 @@
           <li
             id="{{ procedure.position }}"
             class="timelineBuffer">
-            
+
           </li>
-          {% for time in ['00:30','01:00','01:30','02:00','02:30','03:00','03:30','04:00','04:30','05:00','05:30','06:00','06:30'] %} 
+          {% for time in ['00:30','01:00','01:30','02:00','02:30','03:00','03:30','04:00','04:30','05:00','05:30','06:00','06:30'] %}
           <li
             id="{{ procedure.position }}"
             class="timelineTick">
@@ -71,7 +102,6 @@
       </div>
   </div>
 </div>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 <script
@@ -112,8 +142,8 @@
     }
   });
   $('.delete').click(function(){
-  
-    $(this).parent().remove();   
+
+    $(this).parent().remove();
    location.reload(true);
 });
 </script>
