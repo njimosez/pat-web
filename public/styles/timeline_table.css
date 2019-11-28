@@ -68,14 +68,14 @@ table {
   width:10%;
 }
 .timelineR {
-  border-left: thin solid #000000;
-  border-top: thin solid #000000;
-  border-bottom: thin solid #000000;
+  border-left: thin  lightslategrey;
+  border-top: thin  lightslategrey;
+  border-bottom: thin  lightslategrey;
 }
 .timelineL {
-  border-right: thin solid #000000;
-  border-top: thin solid #000000;
-  border-bottom: thin solid #000000;
+  border-right: thin  lightslategrey;
+  border-top: thin lightslategrey;
+  border-bottom: thin lightslategrey;
 }
 .timelineTick {
   height:59px;font-size: small;
