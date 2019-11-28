@@ -142,7 +142,7 @@ const getProjectTimeline = function (req, res, next) {
             (actor1procedure[a].column === tasks[t].crew)) {
             var object1 = _.object(['file', 'position', 'color', 'title', 'hours', 'minutes', 'cellHeight'], 
             [actor1procedure[a].file, actor1procedure[a].position,
-              actor1procedure[a].color, tasks[t].title, tasks[t].title.hours, tasks[t].minutes, tasks[t].cellHeight
+              actor1procedure[a].color, tasks[t].title, tasks[t].hours, tasks[t].minutes, tasks[t].cellHeight
             ]);
             timeline1.push(object1);
           }
@@ -155,7 +155,7 @@ const getProjectTimeline = function (req, res, next) {
             (actor2procedure[b].column === tasks[s].crew)) {
             var object2 = _.object(['file', 'position', 'color', 'title', 'hours', 'minutes', 'cellHeight'], 
             [actor2procedure[b].file, actor2procedure[b].position,
-              actor2procedure[b].color, tasks[s].title, tasks[s].title.hours, tasks[s].minutes, tasks[s].cellHeight
+              actor2procedure[b].color, tasks[s].title, tasks[s].hours, tasks[s].minutes, tasks[s].cellHeight
             ]);
             timeline2.push(object2);
           }
