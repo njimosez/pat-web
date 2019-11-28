@@ -78,10 +78,10 @@ table {
   border-bottom: thin solid #000000;
 }
 .timelineTick {
-  height:60px;font-size: small;
+  height:59px;font-size: small;
 }
 .timelineTickL {
-  height:60px;font-size: small;text-align: right;
+  height:59px;font-size: small;text-align: right;
 }
 .timelineBuffer{
   height:50px;
@@ -92,6 +92,7 @@ table {
   border-style:solid;
   border-color:#ffffff;
   height: 42px;
+  margin-bottom: 10px;
 }
 
 .duration {
