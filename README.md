@@ -4,9 +4,7 @@ The purpose of this web app(under development) is to facilitate large structural
 files used in automating the creation of NASA Extravehicular Activities (EVAs, AKA &quot;spacewalks&quot;)
  procedures when using the [Maestro procedure generator](https://github.com/xOPERATIONS/maestro).
 
- # Dev Notes
-   Read devnotes.md for development status
- 
+  
 # Install for testing dev purposes
 1. Install [node LTS version](https://nodejs.org/en/download/).
 2. Install [Visual Studio Code](https://code.visualstudio.com/download).
