@@ -163,8 +163,7 @@ const getProjectTimeline = function (req, res, next) {
       }
 
       }
-    console.log(" Trigger: " + isSaveButton);
-    res.render("summary-timeline.html", {
+      res.render("summary-timeline.html", {
       sessionDoc: doc,
       isSaveButton: isSaveButton,
       actor1: actor1procedure,
