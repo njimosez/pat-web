@@ -9,7 +9,7 @@
  * with more robust user authentication 
  * 
  */
-
+const flash = require('flash-express');
 const express = require('express');
 const bodyParser = require('body-parser');
 const nunjucks = require('nunjucks');
@@ -57,7 +57,7 @@ app.use(session({
   }
     
 }));
-
+app.use(flash());
 //view/template engine setup
 nunjucks.configure('views', {
   autoescape: true,
