@@ -30,6 +30,8 @@ const insert_taskdb = new Datastore({
  * the commit changes button on the timeline
  */
 var isSaveButton = false;
+// flash notification option
+var option = { position:"t",  duration:"3000"};
 
 /**
  * Create an EVA procedure and associated task files documents
@@ -237,6 +239,7 @@ const reorderTimeline = function (req, res, next) {
       }
       //trigger the save modal display
       isSaveButton = true;
+      res.flash('Eva Procedure reordered','success',option);
       res.redirect("/summary");
     });
 
@@ -277,7 +280,7 @@ const deleteProcedureTask = function (req, res, next) {
       // add the remove task to the insert object
       var obj = _.object(['userId', 'task'], [req.sessionID, tasktoRemove]);
       insert_taskdb.insert(obj);
-
+      res.flash(tasktoRemove.file + ' removed from procedure','success',option);
       res.redirect("/summary");
     }
   });
@@ -330,6 +333,7 @@ const insertProcedureTask = function (req, res, next) {
 
       //trigger the save modal display
       isSaveButton = true;
+      res.flash(tasktoAdd.file + ' inserted successfully inserted into the procedure','success',option);
       res.redirect("/summary");
 
     }
@@ -352,6 +356,7 @@ const removeSessionTimeline = function (req, next) {
   //turn off the save modal display
   isSaveButton = false;
 };
+
 /* Export methods */
 module.exports = {
   createObjects: createObjects,

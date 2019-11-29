@@ -13,6 +13,9 @@ const _ = require('underscore');
 const Datastore = require('nedb');
 const timelineModel = require('./timelineModel.js');
 const projectdb = new Datastore({ filename: 'maestro-project.db', autoload: true });
+// flash notification option
+var option = { position:"t",  duration:"3000"};
+
 /**
  * 
  * @param {*} userSessionDir "dir created per user session in local projects repo"
@@ -27,6 +30,7 @@ const createProject = function (userSessionDir, myMaestroProjectDoc, req, res, n
       shell.rm('-Rf', userSessionDir);
       next(new Error(err));
     } else {
+      res.flash((myMaestroProjectDoc.projectName).toUpperCase() + ' was sucessfully retrieved','success',option);
       res.render('project.html', { sessionDoc: newDoc });
     }
   });
@@ -109,7 +113,7 @@ const deleteProjectFiles = function (req, res, next) {
     } else {
     
       shell.rm('-Rf', userSessionDir);
-
+      res.flash('Project was sucessfully removed','success',option);
       res.render('index.html');
     }
   });
