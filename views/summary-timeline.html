@@ -1,18 +1,18 @@
 {% extends "_summary_layout.html" %} {% block content %}
 
-<h2 class="text-center">{{ sessionDoc.procedureDetails.procedure_name | capitalize}} - Summary Timeline</h2>
+<h2 class="text-center">{{ sessionDoc.procedureDetails.procedure_name}} - Summary Timeline</h2>
 
 <div class="container   p-3">
 <p class="text-center"> Use the "<i class="fa fa-bars"></i>" button to reorder a task , and “<i class="fa fa-remove "></i>” to remove a task </p>
 
-   <div class="row offset-md-3">
+   <div class="row offset-md-2">
     <div class="col-md-6 ">
     {% if insertdoc != 0 %}
     <div class="dropdown">
   <button class="btn  btn-outline-secondary btn-lg dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Insert Tasks
+   <i class="fa fa-plus-square-o fa-fw" ></i> Insert Tasks
   </button>
-  <p > Inserted task are placed at the bottom of the timeline and should be dragged and dropped to the appropriate location </p>
+  <p class="small"> Inserted task are placed at the bottom of the timeline. <br> Drag and drop to the appropriate location after insertion.</p>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
   {% for item in insertdoc %}
     <a class="dropdown-item" href="/summary/insert?file={{ item.task.file }}">{{ item.task.file| replace
@@ -26,10 +26,10 @@
     </div>
     <div class="col-md-6 ">
   {% if  isSaveButton %}
-   <button type="button" class="btn btn-outline-success btn-lg" data-toggle="modal" data-target="#commitModalCenter">
+   <button type="button" class="btn btn-outline-secondary btn-lg" data-toggle="modal" data-target="#commitModalCenter">
         <i class="fa fa-save fa-fw"></i>Commit Changes
       </button>
-      <p > Save your Eva Procedure changes back to the GitLab repository</p>
+      <p class="small"><b> A change to {{ sessionDoc.procedureDetails.procedure_name }} has been detected.</b> <br> Save your changes back to the GitLab repository.</p>
       {%include "partials/commit-project-form.html" %}
     {% endif %}
 </div>
