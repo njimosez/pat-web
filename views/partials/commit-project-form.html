@@ -2,44 +2,40 @@
  timeline or to delete a PAT Project stored in the session repo
 A user can only work on one project at a time -->
 
-
-    <!-- Modal -->
-    <div class="modal fade" id="commitModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle"> Save changes</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                 <form  method="POST" action="/commit">
+<!-- Modal -->
+<div class="modal fade" id="commitModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle"> Save changes</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form  method="POST" action="/commit">
                 <div class="modal-body">
-                <div class="form-group ">
-            <label for="username" class="col-form-label">Username:</label>
-            <input type="text" class="form-control" name="username" id="username" required>
-          </div>
-           <div class="form-group">
-            <label for="password" class="col-form-label">Password:</label>
-            <input type="password" class="form-control" name="password" required>
-          </div>
-          <div class="form-group">
-            <label for="message" class="col-form-label">Commit Message:</label>
-            <textarea class="form-control" name="message" placeholder="Not more than 17 characters"></textarea>
-            
-          </div>
+                    <div class="form-group ">
+                        <label for="username" class="col-form-label">Username:</label>
+                        <input type="text" class="form-control" name="username" id="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="col-form-label">Password:</label>
+                        <input type="password" class="form-control" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message" class="col-form-label">Commit Message:</label>
+                        <textarea class="form-control" name="message" placeholder="Not more than 17 characters"></textarea>
+
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                      
-                        <button id="commit_button" type="submit" class="btn btn-primary">Commit</button>
-                   
+
+                    <button id="commit_button" type="submit" class="btn btn-primary">Commit</button>
 
                 </div>
-                 </form>
-            </div>
+            </form>
         </div>
     </div>
 </div>
-
-
+</div>
