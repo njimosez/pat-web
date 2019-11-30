@@ -50,7 +50,7 @@ const commitProject = function (req, res, next) {
 
        // Set up GitHub url like this so no manual entry of user pass needed
        const gitLabUrl = `https://${userName}:${password}@gitlab.com/${userName}/${repo}`;
-       simpleGit.init()
+       simpleGit
        .add('./*')
        .commit("first commit!")
        .addRemote('origin', gitLabUrl)
