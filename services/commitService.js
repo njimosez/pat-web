@@ -40,7 +40,7 @@ const commitProject = function (req, res, next) {
         shell.cd(projectFolderPath );
         console.log(projectFolderPath);
                 
-        var repo = 'test';  //Repo name
+        var repo = req.body.projectName;  //Repo name
         console.log(repo);
         // User name and password of your GitHub
         var userName = req.body.username;
@@ -54,7 +54,7 @@ const commitProject = function (req, res, next) {
        .add('./*')
        .commit("first commit!")
        .addRemote('origin', gitLabUrl)
-       .push('origin', 'master');
+       .merge('origin', 'master');
 
        // Add remore repo url as origin to repo
       /*  simpleGitPromise.init();
