@@ -38,9 +38,11 @@ const commitProject = function (req, res, next) {
            // change current directory to repo directory in local
         var projectFolderPath = userSessionDir + '/' + path.basename(doc.projectURL) + '/' + procedureFolderName;
         shell.cd(projectFolderPath );
+        shell.rm('-Rf', '.git');
         console.log(projectFolderPath);
                 
-        var repo = req.body.projectName;  //Repo name
+        var repo = 'test';
+        //re.body.projectName;  //Repo name
         console.log(repo);
         // User name and password of your GitHub
         var userName = req.body.username;
@@ -50,10 +52,11 @@ const commitProject = function (req, res, next) {
 
        // Set up GitHub url like this so no manual entry of user pass needed
        const gitLabUrl = `https://${userName}:${password}@gitlab.com/${userName}/${repo}`;
-       simpleGit
+       simpleGit.init()
        .add('./*')
-       .commit("first commit!");
-      
+       .commit("first commit!")
+       .addRemote('origin', gitLabUrl)
+       .merge('origin', 'master');
 
        // Add remore repo url as origin to repo
       /*  simpleGitPromise.init();
