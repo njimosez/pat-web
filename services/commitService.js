@@ -38,7 +38,7 @@ const commitProject = function (req, res, next) {
            // change current directory to repo directory in local
         var projectFolderPath = userSessionDir + '/' + path.basename(doc.projectURL) + '/' + procedureFolderName;
         shell.cd(projectFolderPath );
-        shell.rm('-Rf', '.git');
+        shell.rm('-Rf', projectFolderPath + '/.git');
         console.log(projectFolderPath);
                 
         var repo = 'test';
