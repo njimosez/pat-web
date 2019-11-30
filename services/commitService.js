@@ -52,9 +52,8 @@ const commitProject = function (req, res, next) {
        const gitLabUrl = `https://${userName}:${password}@gitlab.com/${userName}/${repo}`;
        simpleGit
        .add('./*')
-       .commit("first commit!")
-       .addRemote('origin', gitLabUrl)
-       .merge('origin', 'master');
+       .commit("first commit!");
+      
 
        // Add remore repo url as origin to repo
       /*  simpleGitPromise.init();
