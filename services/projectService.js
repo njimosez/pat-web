@@ -55,6 +55,9 @@ const cloneProjectdir = function (req, res, next) {
 
       var EvaProcedure = {
         'userId': req.sessionID,
+        'projectName': path.basename(giturl),
+        'projectURL': giturl,
+        'ProcedureFile': giturl,
         'columnHeaderText': [],
         'procedureDetails': []
       };
@@ -68,6 +71,7 @@ const cloneProjectdir = function (req, res, next) {
 
       for (var x in procedureMetaDoc) {
         let filename = procedureMetaDoc[x].name;
+        EvaProcedure.ProcedureFile = filename;
         let procedureDoc = serviceUtils.JSONData(userSessionDir, giturl, procedureFolderName, filename, next, req);
 
         myMaestroProjectDoc.procedureMeta.push({

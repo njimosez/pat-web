@@ -60,14 +60,16 @@ const JSONData = function YAMLtoJSON(userSessionDir, giturl, folderName, filenam
  * @param {*} next 
  * @param {*} req 
  */
-const YAMLData = function JSONtoYAML(jsonStr, userSessionDir, giturl, folderName, filename, next, req) {
-  var projectFolderPath = userSessionDir + '/' + path.basename(giturl) + '/' + folderName;
-  var yamlFile = projectFolderPath + "/" + filename;
+const YAMLData = function JSONtoYAML(jsonStr,projectFilePath, next, req) {
+  //var projectFilePath = userSessionDir + '/' + path.basename(giturl) + '/' + folderName + '/' + filename;
+  //var yamlFile = projectFolderPath + "/" + filename;
+  console.log(projectFilePath);
   try {
     //var obj = JSON.parse(jsonStr);
-    console.log(projectFolderPath);
+   // console.log(projectFilePath);
+    // delete the procedure 
     var yamlStr = YAML.stringify(jsonStr, 4); //> projectFolderPath/test.yml; 
-    var stream = fs.createWriteStream(projectFolderPath + '/test.yml');
+    var stream = fs.createWriteStream(projectFilePath);
     stream.write(yamlStr);
     return yamlStr;
   } catch (e) {

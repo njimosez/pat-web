@@ -5,6 +5,7 @@
  */
 
 const projectService = require('../services/projectService.js');
+const commitService = require('../services/commitService.js');
 const timelineModel = require('../model/timelineModel.js');
 const projectModel = require('../model/projectModel.js');
 const _ = require("underscore");
@@ -19,7 +20,8 @@ const urlarray = [
   'https://gitlab.com/xOPERATIONS/sts-134',
   'https://gitlab.com/xOPERATIONS/sts-135',
   'https://gitlab.com/njimosez/sts-134',
-  'file:///C:/Users/mosez/Documents/UMUC/Capstone/destino/sts-1341'
+  'file:///C:/Users/mosez/Documents/UMUC/Capstone/destino/sts-1341',
+  'https://gitlab.com/maestro-web-team/sts-134'
 ];
 
 module.exports = function (app) {
@@ -74,5 +76,9 @@ module.exports = function (app) {
   app.get('/summary/insert', function (req, res, next) {
        timelineModel.insertProcedureTask(req, res, next);
   });
-  
+  /* Delete project files */
+  app.post('/commit', function (req, res, next) {
+    console.log(req.body);
+    commitService.commitProject(req,res,next);
+  });
 }; // end module.

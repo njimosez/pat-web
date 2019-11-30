@@ -13,19 +13,30 @@ A user can only work on one project at a time -->
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                 <form  method="POST" action="/commit">
                 <div class="modal-body">
-                   <div class="jumbotron">
-                 <h2 class="display-4">Coming soon!</h2>
-                </div>
+                <div class="form-group ">
+            <label for="username" class="col-form-label">Username:</label>
+            <input type="text" class="form-control" name="username" id="username" required>
+          </div>
+           <div class="form-group">
+            <label for="password" class="col-form-label">Password:</label>
+            <input type="password" class="form-control" name="password" required>
+          </div>
+          <div class="form-group">
+            <label for="message" class="col-form-label">Commit Message:</label>
+            <textarea class="form-control" name="message" placeholder="Not more than 17 characters"></textarea>
+            
+          </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <form  method="POST" action="#">
-                        <input type="hidden" name="projectId" value={{ sessionDoc.userId}}>
-                        <button id="giturl_button" type="submit" class="btn btn-primary">Commit</button>
-                    </form>
+                      
+                        <button id="commit_button" type="submit" class="btn btn-primary">Commit</button>
+                   
 
                 </div>
+                 </form>
             </div>
         </div>
     </div>

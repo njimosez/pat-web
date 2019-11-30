@@ -13,6 +13,7 @@
   "author": "Goerling Walter, Jalloh Ibrahim, Magoola Ibrahim , Ngwa Edwin, Senshaw Araya",
   "license": "MIT",
   "dependencies": {
+    "@octokit/rest": "^16.35.0",
     "body-parser": "^1.19.0",
     "chai": "^4.2.0",
     "chalk": "^2.4.2",
