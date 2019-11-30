@@ -10,16 +10,17 @@ const shell = require('shelljs');
 const path = require('path');
 const fs = require('fs');
 const dirTree = require('directory-tree');
-const serviceUtils = require('./services/serviceUtils');
+const serviceUtils = require('../services/serviceUtils');
 const _ = require('underscore');
-const projectModel = require('./model/projectModel.js');
-const timelineModel = require('./model/timelineModel.js');
+const projectModel = require('../model/projectModel.js');
+const timelineModel = require('../model/timelineModel.js');
 const procedureFolderName = 'procedures';
 const tasksFolderName = 'tasks';
 const procedureImage = 'images/';
 const patProjectdir = '../public/projects/';
 
-const reqt = {sessionID: 'fakeID-6b15-4e8f-9f73-1b891b043a31', body:{giturl:'https://gitlab.com/maestro-web-team/sts-134.git'}};
+const reqt = {sessionID: 'fakeID-6b15-4e8f-9f73-1b891b043a31', body:{giturl:'https://gitlab.com/maestro-web-team/sts-134'}};
+const req2 = {sessionID: '56753b86-2cb0-4604-b937-f5bb2d85968d', body:{giturl:'https://gitlab.com/maestro-web-team/sts-134'}};
 const rest = {render: function(html, object){
     console.log('res.render(' + html + ', ' + object + ')');
     }
@@ -131,18 +132,29 @@ const cloneProjectdir = function (req, res, next) {
 const pushProjectdir = function (req, res, next) {
     var userSessionDir = patProjectdir + req.sessionID;
     var giturl = req.body.giturl;
-    shell.mkdir('-p', patProjectdir, userSessionDir);
-    const simpleGit = require('simple-git')(userSessionDir);
+    var userSessionDir = 'C:/pat-web/public/projects/cf2d36f1-fdab-45b9-a6af-5e5a7c71a013/sts-134'
+    //shell.mkdir('-p', patProjectdir, userSessionDir);
+    const simpleGit = require('simple-git')(userSessionDir)
+        .add(userSessionDir)
+        .commit('Test message')
+        .addRemote('origin', 'https://gitlab.com/maestro-web-team/sts-134' )
+        .addConfig({user:'maestro-web-team',password:'X8r56-Jk9H0-!j6Ki3', giturl:'https://gitlab.com/maestro-web-team/sts-134'})
+        .merge('origin','master');
+    console.log(userSessionDir);
 
-    simpleGit.commit('Automated Commit from Maestro-Web', patProceduredir+patProcedurefile);
+    simpleGit.commit('message');
+    simpleGit.merge();
+    //simpleGit.push();
+    //simpleGit.commit('Automated Commit from Maestro-Web', patProceduredir+patProcedurefile);
+    console.log(simpleGit.log())
     return simpleGit.log();
 }
 
 describe('Testing using simpleGit to push files',function(){
     //preamble start
     var log = 0;
-    cloneProjectdir(reqt, rest, nextt);
-    log = pushProjectdir(reqt, rest, nextt);
+    //cloneProjectdir(reqt, rest, nextt);
+    //log = pushProjectdir(req2, rest, nextt);
     //projectModel.deleteProjectFiles(reqt,rest,nextt);
     //console.log(log);
     it('should push successfully',function(){
