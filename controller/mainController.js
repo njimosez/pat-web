@@ -20,7 +20,6 @@ const urlarray = [
   'https://gitlab.com/xOPERATIONS/sts-134',
   'https://gitlab.com/xOPERATIONS/sts-135',
   'https://gitlab.com/njimosez/sts-134',
-  'file:///C:/Users/mosez/Documents/UMUC/Capstone/destino/sts-1341',
   'https://gitlab.com/maestro-web-team/sts-134'
 ];
 
